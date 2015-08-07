@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="js/rdfstore.min.js" ></script>
+<script type="text/javascript">
+    var org_data = ''+
+            '@prefix ns1: <http://creativecommons.org/ns#> .' +
+            '@prefix ns2: <http://www.w3.org/2004/02/skos/core#> .' +
+            '@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .' +
+            '@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .' +
+            '@prefix xml: <http://www.w3.org/XML/1998/namespace> .' +
+            '@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .' +
+            '' +
+            '<http://data.bioregionalassessments.gov.au/id/organisation/ABARE-BRS> a <http://www.w3.org/ns/org#Organization>,' +
+            '        <http://xmlns.com/foaf/0.1/Organization> ;' +
+            '    rdfs:label "Australian Bureau of Agricultural and Resource Economics - Bureau of Rural Sciences"^^xsd:string ;' +
+            '    rdfs:comment ""^^xsd:string .' +
+            '' +
+            '<http://data.bioregionalassessments.gov.au/id/organisation/ABARES> a <http://www.w3.org/ns/org#Organization>,' +
+            '        <http://xmlns.com/foaf/0.1/Organization> ;' +
+            '    rdfs:label "Australian Bureau of Agricultural and Resource Economics and Sciences"^^xsd:string ;' +
+            '    rdfs:comment ""^^xsd:string .' +
+            '' +
+            '<http://data.bioregionalassessments.gov.au/id/organisation/ABS> a <http://www.w3.org/ns/org#Organization>,' +
+            '        <http://xmlns.com/foaf/0.1/Organization> ;' +
+            '    rdfs:label "Australian Bureau of Statistics"^^xsd:string ;' +
+            '    ns1:attributionName [ rdfs:label "pfiirv"^^xsd:string ;' +
+            '            rdfs:comment "(c) Commonwealth of Australia (Australian Bureau of Statistics)"^^xsd:string ] ;' +
+            '    rdfs:comment "Australian Bureau of Statistics"^^xsd:string .' +
+            '' +
+            '<http://data.bioregionalassessments.gov.au/id/organisation/ACTESDD> a <http://www.w3.org/ns/org#Organization>,' +
+            '        <http://xmlns.com/foaf/0.1/Organization> ;' +
+            '    rdfs:label "ACT Environment and Sustainable Development Directorate"^^xsd:string ;' +
+            '    ns1:attributionName [ rdfs:label "p9iyrv"^^xsd:string ;' +
+            '            rdfs:comment "(c) Australian Capital Territory Environment and Sustainable Development Directorate"^^xsd:string ] ;' +
+            '    rdfs:comment "Australian Capital Territory Environment and Sustainable Development Directorate"^^xsd:string .' +
+            '' +
+            '<http://data.bioregionalassessments.gov.au/id/organisation/AGL> a <http://www.w3.org/ns/org#Organization>,' +
+            '        <http://xmlns.com/foaf/0.1/Organization> ;' +
+            '    rdfs:label "AGL"^^xsd:string ;' +
+            '    rdfs:comment ""^^xsd:string .' +
+            '' +
+            '<http://data.bioregionalassessments.gov.au/id/organisation/BAP> a <http://www.w3.org/ns/org#Organization>,' +
+            '        <http://xmlns.com/foaf/0.1/Organization> ;' +
+            '    rdfs:label "Bioregional Assessment Programme"^^xsd:string ;' +
+            '    ns1:attributionName [ rdfs:label "p9iirv"^^xsd:string ;' +
+            '            rdfs:comment "(c) Commonwealth of Australia (Bioregional Assessment Programme http://www.bioregionalassessments.gov.au)"^^xsd:string ] ;' +
+            '    rdfs:comment "Bioregional Assessment Programme"^^xsd:string ;' +
+            '    ns2:altLabel "BAP"^^xsd:string .' +
+            '' +
+            '<http://data.bioregionalassessments.gov.au/id/organisation/BOM> a <http://www.w3.org/ns/org#Organization>,' +
+            '        <http://xmlns.com/foaf/0.1/Organization> ;' +
+            '    rdfs:label "Bureau of Meteorology"^^xsd:string ;' +
+            '    ns1:attributionName [ rdfs:label "rfuggg"^^xsd:string ;' +
+            '            rdfs:comment "(c) Commonwealth of Australia (Bureau of Meteorology)"^^xsd:string ],' +
+            '        [ rdfs:label "rfurwb"^^xsd:string ;' +
+            '            rdfs:comment "(c) Commonwealth of Australia (Bureau of Meteorology) 2012"^^xsd:string ],' +
+            '        [ rdfs:label "rf4356"^^xsd:string ;' +
+            '            rdfs:comment "(c) Commonwealth of Australia (Bureau of Meteorology) 2014"^^xsd:string ] ;' +
+            '    rdfs:comment "The Australian Bureau of Meteorology"^^xsd:string ;' +
+            '    ns2:altLabel "BOM"^^xsd:string,' +
+            '        "BoM"^^xsd:string,' +
+            '        "The Bureau of Meteorology"^^xsd:string .' +
+            '' +
+            '<http://data.bioregionalassessments.gov.au/id/organisation/BRGCMA> a <http://www.w3.org/ns/org#Organization>,' +
+            '        <http://xmlns.com/foaf/0.1/Organization> ;' +
+            '    rdfs:label "Border Rivers-Gwyder Catchment Management Authority"^^xsd:string ;' +
+            '    ns1:attributionName [ rdfs:label "avukc6"^^xsd:string ;' +
+            '            rdfs:comment "(c) Border Rivers Gwyder CMA"^^xsd:string ] ;' +
+            '    rdfs:comment "Border Rivers-Gwydir Catchment Management Authority"^^xsd:string .' +
+            '' +
+            '<http://data.bioregionalassessments.gov.au/id/organisation/BRS> a <http://www.w3.org/ns/org#Organization>,' +
+            '        <http://xmlns.com/foaf/0.1/Organization> ;' +
+            '    rdfs:label "Bureau of Rural Sciences"^^xsd:string ;' +
+            '    rdfs:comment ""^^xsd:string .' +
+            '' +
+            '<http://data.bioregionalassessments.gov.au/id/organisation/CALJPL> a <http://www.w3.org/ns/org#Organization>,' +
+            '        <http://xmlns.com/foaf/0.1/Organization> ;' +
+            '    rdfs:label "Caltech/JPL"^^xsd:string ;' +
+            '    ns1:attributionName [ rdfs:label "4y6hrt"^^xsd:string ;' +
+            '            rdfs:comment "NASA/JPL-Caltech"^^xsd:string ] ;' +
+            '    rdfs:comment "Caltech/JPL"^^xsd:string ;' +
+            '    ns2:altLabel "Caltech/JPL"^^xsd:string .' +
+            '' +
+            '<http://data.bioregionalassessments.gov.au/id/organisation/CSIRO> a <http://www.w3.org/ns/org#Organization>,' +
+            '        <http://xmlns.com/foaf/0.1/Organization> ;' +
+            '    rdfs:label "CSIRO"^^xsd:string ;' +
+            '    ns1:attributionName [ rdfs:label "45jikv"^^xsd:string ;' +
+            '            rdfs:comment "Australian Soil Resource Information System (ASRIS), Commonwealth Scientific and Industrial Research Organisation"^^xsd:string ],' +
+            '        [ rdfs:label "34hj44"^^xsd:string ;' +
+            '            rdfs:comment "(c) CSIRO"^^xsd:string ],' +
+            '        [ rdfs:label "g552fh"^^xsd:string ;' +
+            '            rdfs:comment "(c) CSIRO 2015"^^xsd:string ],' +
+            '        [ rdfs:label "hu6e9h"^^xsd:string ;' +
+            '            rdfs:comment "National soil data provided by the Australian Collaborative Land Evaluation Program ACLEP, endorsed through the National Committee on Soil and Terrain NCST (www.clw.csiro.au/aclep)"^^xsd:string ],' +
+            '        [ rdfs:label "geghbv"^^xsd:string ;' +
+            '            rdfs:comment "(c) CSIRO 2011"^^xsd:string ],' +
+            '        [ rdfs:label "3y53uh"^^xsd:string ;' +
+            '            rdfs:comment "Chen Y, SM Cuddy, LE Merrin, C Huang, D Pollock, N Sims, B Wang and Q Bai (2012). Murray-Darling Basin Floodplain Inundation Model Version 2.0 (MDB-FIM2). Technical report. CSIRO Water for a Healthy Country Flagship, Australia."^^xsd:string ],' +
+            '        [ rdfs:label "g34caf"^^xsd:string ;' +
+            '            rdfs:comment "(c) CSIRO 2014"^^xsd:string ] ;' +
+            '    rdfs:comment "Australia\'s CSIRO"^^xsd:string ;' +
+            '    ns2:altLabel "CSIRO"^^xsd:string .' +
+            '' +
+            '<http://data.bioregionalassessments.gov.au/id/organisation/DAG> a <http://www.w3.org/ns/org#Organization>,' +
+            '        <http://xmlns.com/foaf/0.1/Organization> ;' +
+            '    rdfs:label "Department of Agriculture"^^xsd:string ;' +
+            '    ns1:attributionName [ rdfs:label "dfhcoe"^^xsd:string ;' +
+            '            rdfs:comment "(c) Commonwealth of Australia (Department of Agriculture)"^^xsd:string ],' +
+            '        [ rdfs:label "3y4ybn"^^xsd:string ;' +
+            '            rdfs:comment "(c) Commonwealth of Australia 2014"^^xsd:string ] ;' +
+            '    rdfs:comment "Department of Agriculture"^^xsd:string .' +
+            '' +
+            '<http://data.bioregionalassessments.gov.au/id/organisation/DECC> a <http://www.w3.org/ns/org#Organization>,' +
+            '        <http://xmlns.com/foaf/0.1/Organization> ;' +
+            '    rdfs:label "NSW Department of Environment and Climate Change"^^xsd:string ;' +
+            '    rdfs:comment ""^^xsd:string .' +
+            '' +
+            '<http://data.bioregionalassessments.gov.au/id/organisation/DECCW> a <http://www.w3.org/ns/org#Organization>,' +
+            '        <http://xmlns.com/foaf/0.1/Organization> ;' +
+            '    rdfs:label "NSW Department of Environment, Climate Change and Water"^^xsd:string ;' +
+            '    rdfs:comment ""^^xsd:string .' +
+            '' +
+            '<http://data.bioregionalassessments.gov.au/id/organisation/DEHP> a <http://www.w3.org/ns/org#Organization>,' +
+            '        <http://xmlns.com/foaf/0.1/Organization> ;' +
+            '    rdfs:label "Queensland Department of Environment and Heritage Protection"^^xsd:string ;' +
+            '    ns1:attributionName [ rdfs:label ""^^xsd:string ;' +
+            '            rdfs:comment "(c) "^^xsd:string ] ;' +
+            '    rdfs:comment ""^^xsd:string .' +
+            '' +
+            '<http://data.bioregionalassessments.gov.au/id/organisation/DELWP> a <http://www.w3.org/ns/org#Organization>,' +
+            '        <http://xmlns.com/foaf/0.1/Organization> ;' +
+            '    rdfs:label "Victorian Department of Environment, Land, Water and Planning"^^xsd:string ;' +
+            '    ns1:attributionName [ rdfs:label "ce893g"^^xsd:string ;' +
+            '            rdfs:comment "(c) State of Victoria (Department of Environment, Land, Water and Planning)"^^xsd:string ] ;' +
+            '    rdfs:comment ""^^xsd:string .' +
+            '' +
+            '<http://data.bioregionalassessments.gov.au/id/organisation/DENV> a <http://www.w3.org/ns/org#Organization>,' +
+            '        <http://xmlns.com/foaf/0.1/Organization> ;' +
+            '    rdfs:label "Department of the Environment"^^xsd:string ;' +
+            '    ns1:attributionName [ rdfs:label "eggeh2"^^xsd:string ;' +
+            '            rdfs:comment "Commonwealth of Australia 2013"^^xsd:string ],' +
+            '        [ rdfs:label "ggnte3"^^xsd:string ;' +
+            '            rdfs:comment "(c) Department of the Environment"^^xsd:string ],' +
+            '        [ rdfs:label "27uwjb"^^xsd:string ;' +
+            '            rdfs:comment "Collaborative Australian Protected Areas Database (CAPAD) 2012, Commonwealth of Australia 2012."^^xsd:string ],' +
+            '        [ rdfs:label "poliku"^^xsd:string ;' +
+            '            rdfs:comment "(c) Commonwealth of Australia (Department of the Environment)"^^xsd:string ] ;' +
+            '    rdfs:comment "Formerly Department of Sustainability, Environment, Water, Population and Communities"^^xsd:string .' +
+            '' +
+            '<http://data.bioregionalassessments.gov.au/id/organisation/DEPI> a <http://www.w3.org/ns/org#Organization>,' +
+            '        <http://xmlns.com/foaf/0.1/Organization> ;' +
+            '    rdfs:label "Victorian Department of Environment and Primary Industries"^^xsd:string ;' +
+            '    ns1:attributionName [ rdfs:label "tg3gt4"^^xsd:string ;' +
+            '            rdfs:comment "(c) State of Victoria (Department of Environment and Primary Industries) 2015"^^xsd:string ],' +
+            '        [ rdfs:label "4902jf"^^xsd:string ;' +
+            '            rdfs:comment "(c) State of Victoria (Department of Environment and Primary Industries)"^^xsd:string ],' +
+            '        [ rdfs:label "f3h53h"^^xsd:string ;' +
+            '            rdfs:comment "State of Victoria"^^xsd:string ] ;' +
+            '    rdfs:comment ""^^xsd:string .' +
+            '' +
+            '<http://data.bioregionalassessments.gov.au/id/organisation/DERM> a <http://www.w3.org/ns/org#Organization>,' +
+            '        <http://xmlns.com/foaf/0.1/Organization> ;' +
+            '    rdfs:label "Queensland Department of Environment and Resource Management"^^xsd:string ;' +
+            '    ns1:attributionName [ rdfs:label "389hnv"^^xsd:string ;' +
+            '            rdfs:comment "(c) State of Queensland (Department of Environment and Resource Management) 2012"^^xsd:string ],' +
+            '        [ rdfs:label "q5ujnd"^^xsd:string ;' +
+            '            rdfs:comment "(c) State of Queensland"^^xsd:string ] ;' +
+            '    rdfs:comment ""^^xsd:string .' +
+            '' +
+            '<http://data.bioregionalassessments.gov.au/id/organisation/DEWHA> a <http://www.w3.org/ns/org#Organization>,' +
+            '        <http://xmlns.com/foaf/0.1/Organization> ;' +
+            '    rdfs:label "Department of the Environment, Water, Heritage and the Arts"^^xsd:string ;' +
+            '    rdfs:comment ""^^xsd:string .' +
+            '' +
+            '<http://data.bioregionalassessments.gov.au/id/organisation/DEWNR> a <http://www.w3.org/ns/org#Organization>,' +
+            '        <http://xmlns.com/foaf/0.1/Organization> ;' +
+            '    rdfs:label "SA Department of Environment, Water and Natural Resources"^^xsd:string ;' +
+            '    ns1:attributionName [ rdfs:label "plliok"^^xsd:string ;' +
+            '            rdfs:comment "(c) State of South Australia (Department for Environment, Water and Natural Resources)"^^xsd:string ] ;' +
+            '    rdfs:comment ""^^xsd:string .' +
+            '' +
+            '<http://data.bioregionalassessments.gov.au/id/organisation/DEWR> a <http://www.w3.org/ns/org#Organization>,' +
+            '        <http://xmlns.com/foaf/0.1/Organization> ;' +
+            '    rdfs:label "Department of the Environment and Water Resources"^^xsd:string ;' +
+            '    rdfs:comment ""^^xsd:string .' +
+            '' +
+            '<http://data.bioregionalassessments.gov.au/id/organisation/DEWS> a <http://www.w3.org/ns/org#Organization>,' +
+            '        <http://xmlns.com/foaf/0.1/Organization> ;' +
+            '    rdfs:label "Queensland Department of Energy and Water Supply"^^xsd:string ;' +
+            '    ns1:attributionName [ rdfs:label ""^^xsd:string ;' +
+            '            rdfs:comment "(c) "^^xsd:string ] ;' +
+            '    rdfs:comment ""^^xsd:string .' +
+            '' +
+            '<http://data.bioregionalassessments.gov.au/id/organisation/DIPNR> a <http://www.w3.org/ns/org#Organization>,' +
+            '        <http://xmlns.com/foaf/0.1/Organization> ;' +
+            '    rdfs:label "NSW Department of Infrastructure, Planning and Natural Resources"^^xsd:string ;' +
+            '    rdfs:comment ""^^xsd:string .' +
+            '' +
+            '<http://data.bioregionalassessments.gov.au/id/organisation/DMITRE> a <http://www.w3.org/ns/org#Organization>,' +
+            '        <http://xmlns.com/foaf/0.1/Organization> ;' +
+            '    rdfs:label "SA Department for Manufacturing, Innovation, Trade, Resources and Energy"^^xsd:string ;' +
+            '    ns1:attributionName [ rdfs:label "r4435b"^^xsd:string ;' +
+            '            rdfs:comment "(c) State of South Australia (Department for Manufacturing, Innovation, Trade, Resources and Energy)"^^xsd:string ],' +
+            '        [ rdfs:label "575bnr"^^xsd:string ;' +
+            '            rdfs:comment "Government of South Asutralia"^^xsd:string ] ;' +
+            '    rdfs:comment ""^^xsd:string .' +
+            '' +
+            '<http://data.bioregionalassessments.gov.au/id/organisation/DNRM> a <http://www.w3.org/ns/org#Organization>,' +
+            '        <http://xmlns.com/foaf/0.1/Organization> ;' +
+            '    rdfs:label "Queensland Department of Natural Resources and Mines"^^xsd:string ;' +
+            '    ns1:attributionName [ rdfs:label "xwkm43"^^xsd:string ;' +
+            '            rdfs:comment "(c) State of Queensland (Department of Natural Resources and Mines) 2012"^^xsd:string ],' +
+            '        [ rdfs:label "9rermc"^^xsd:string ;' +
+            '            rdfs:comment "(c) State of Queensland (Department of Natural Resources and Mines) 2014"^^xsd:string ],' +
+            '        [ rdfs:label "rt9845"^^xsd:string ;' +
+            '            rdfs:comment "(c) State of Queensland (Department of Natural Resources and Mines)"^^xsd:string ],' +
+            '        [ rdfs:label "fqhmyr"^^xsd:string ;' +
+            '            rdfs:comment "(c) State of Queensland"^^xsd:string ],' +
+            '        [ rdfs:label "4j46wj"^^xsd:string ;' +
+            '            rdfs:comment "(c) State of Queensland 2012"^^xsd:string ],' +
+            '        [ rdfs:label "3lbwse"^^xsd:string ;' +
+            '            rdfs:comment "(c) State of Queensland (Department of Natural Resources and Mines) 2015"^^xsd:string ] ;' +
+            '    rdfs:comment ""^^xsd:string .' +
+            '' +
+            '<http://data.bioregionalassessments.gov.au/id/organisation/DNRME> a <http://www.w3.org/ns/org#Organization>,' +
+            '        <http://xmlns.com/foaf/0.1/Organization> ;' +
+            '    rdfs:label "Queensland Department of Natural Resources, Mines and Energy"^^xsd:string ;' +
+            '    rdfs:comment ""^^xsd:string .' +
+            '' +
+            '<http://data.bioregionalassessments.gov.au/id/organisation/DPIPWE> a <http://www.w3.org/ns/org#Organization>,' +
+            '        <http://xmlns.com/foaf/0.1/Organization> ;' +
+            '    rdfs:label "Tasmanian Department of Primary Industries, Parks, Water and Environment"^^xsd:string ;' +
+            '    ns1:attributionName [ rdfs:label "32jnvs"^^xsd:string ;' +
+            '            rdfs:comment "(c) State of Tasmania (Department of Primary Industries, Parks, Water and Environment)"^^xsd:string ] ;' +
+            '    rdfs:comment ""^^xsd:string .' +
+            '' +
+            '<http://data.bioregionalassessments.gov.au/id/organisation/DPIR> a <http://www.w3.org/ns/org#Organization>,' +
+            '        <http://xmlns.com/foaf/0.1/Organization> ;' +
+            '    rdfs:label "SA Department of Primary Industries and Resources"^^xsd:string ;' +
+            '    ns1:attributionName [ rdfs:label ""^^xsd:string ;' +
+            '            rdfs:comment "(c) "^^xsd:string ] ;' +
+            '    rdfs:comment ""^^xsd:string .' +
+            '' +
+            '<http://data.bioregionalassessments.gov.au/id/organisation/DSDBI> a <http://www.w3.org/ns/org#Organization>,' +
+            '        <http://xmlns.com/foaf/0.1/Organization> ;' +
+            '    rdfs:label "Victorian Department of State Development, Business and Innovation"^^xsd:string ;' +
+            '    ns1:attributionName [ rdfs:label "i4ferh"^^xsd:string ;' +
+            '            rdfs:comment "(c) State of Victoria (Department of State Development, Business and Innovation)"^^xsd:string ] ;' +
+            '    rdfs:comment ""^^xsd:string .' +
+            '' +
+            '<http://data.bioregionalassessments.gov.au/id/organisation/DSE> a <http://www.w3.org/ns/org#Organization>,' +
+            '        <http://xmlns.com/foaf/0.1/Organization> ;' +
+            '    rdfs:label "Victorian Department of Sustainability and Environment"^^xsd:string ;' +
+            '    ns1:attributionName [ rdfs:label "5y5jjn"^^xsd:string ;' +
+            '            rdfs:comment "(c) State of Victoria (Department of Sustainability and Environment)"^^xsd:string ] ;' +
+            '    rdfs:comment ""^^xsd:string .' +
+            '' +
+            '<http://data.bioregionalassessments.gov.au/id/organisation/DSITIA> a <http://www.w3.org/ns/org#Organization>,' +
+            '        <http://xmlns.com/foaf/0.1/Organization> ;' +
+            '    rdfs:label "Queensland Department of Science, Information Technology, Innovation and the Arts"^^xsd:string ;' +
+            '    ns1:attributionName [ rdfs:label "orhrk5"^^xsd:string ;' +
+            '            rdfs:comment "(c) State of Queensland (Department of Science, Information Technology, Innovation and the Arts) 2013"^^xsd:string ],' +
+            '        [ rdfs:label "254rhx"^^xsd:string ;' +
+            '            rdfs:comment "(c) State of Queensland (Department of Science, Information Technology, Innovation and the Arts) 2014"^^xsd:string ] ;' +
+            '    rdfs:comment ""^^xsd:string .' +
+            '' +
+            '<http://data.bioregionalassessments.gov.au/id/organisation/DTIRIS> a <http://www.w3.org/ns/org#Organization>,' +
+            '        <http://xmlns.com/foaf/0.1/Organization> ;' +
+            '    rdfs:label "NSW Trade and Investment"^^xsd:string ;' +
+            '    ns1:attributionName [ rdfs:label "jcw65u"^^xsd:string ;' +
+            '            rdfs:comment "NSW Department of Trade and Investment"^^xsd:string ],' +
+            '        [ rdfs:label "3j9fwf"^^xsd:string ;' +
+            '            rdfs:comment "(c) State of New South Wales (Department of Trade and Investment, Regional Infrastructure and Services)"^^xsd:string ] ;' +
+            '    rdfs:comment "NSW Department of Trade and Investment, Regional Infrastructure and Services"^^xsd:string .' +
+            '' +
+            '<http://data.bioregionalassessments.gov.au/id/organisation/ECG> a <http://www.w3.org/ns/org#Organization>,' +
+            '        <http://xmlns.com/foaf/0.1/Organization> ;' +
+            '    rdfs:label "East Coast Geophysics"^^xsd:string ;' +
+            '    rdfs:comment ""^^xsd:string .' +
+            '' +
+            '<http://data.bioregionalassessments.gov.au/id/organisation/EPA> a <http://www.w3.org/ns/org#Organization>,' +
+            '        <http://xmlns.com/foaf/0.1/Organization> ;' +
+            '    rdfs:label "Queensland Environment Protection Agency"^^xsd:string ;' +
+            '    ns1:attributionName [ rdfs:label ""^^xsd:string ;' +
+            '            rdfs:comment "(c) "^^xsd:string ] ;' +
+            '    rdfs:comment ""^^xsd:string .' +
+            '' +
+            '<http://data.bioregionalassessments.gov.au/id/organisation/FROGTECH> a <http://www.w3.org/ns/org#Organization>,' +
+            '        <http://xmlns.com/foaf/0.1/Organization> ;' +
+            '    rdfs:label "FROGTECH"^^xsd:string ;' +
+            '    rdfs:comment ""^^xsd:string .' +
+            '' +
+            '<http://data.bioregionalassessments.gov.au/id/organisation/GA> a <http://www.w3.org/ns/org#Organization>,' +
+            '        <http://xmlns.com/foaf/0.1/Organization> ;' +
+            '    rdfs:label "Geoscience Australia"^^xsd:string ;' +
+            '    ns1:attributionName [ rdfs:label "qahp45"^^xsd:string ;' +
+            '            rdfs:comment "(c) Commonwealth of Australia (Geoscience Australia) 2013"^^xsd:string ],' +
+            '        [ rdfs:label "rmfeme"^^xsd:string ;' +
+            '            rdfs:comment "(c) Commonwealth of Australia (Geoscience Australia) 2015"^^xsd:string ],' +
+            '        [ rdfs:label "77fwee"^^xsd:string ;' +
+            '            rdfs:comment "(c) Commonwealth of Australia (Geoscience Australia) 2012"^^xsd:string ],' +
+            '        [ rdfs:label "wtty24"^^xsd:string ;' +
+            '            rdfs:comment "(c) Commonwealth of Australia 2012"^^xsd:string ],' +
+            '        [ rdfs:label "9f3mdf"^^xsd:string ;' +
+            '            rdfs:comment "Geoscience Australia, 2013. Hydrogeological basement units in contact with the base of the Great Artesian Basin. Scale 1:6000000. Geoscience Australia, Canberra"^^xsd:string ],' +
+            '        [ rdfs:label "mn46vw"^^xsd:string ;' +
+            '            rdfs:comment "Geoscience Australia, 2013. Layer 10 Great Artesian Basin base of Jurassic-Cretaceous sequence surface. Scale 1:2500000. Geoscience Australia, Canberra"^^xsd:string ],' +
+            '        [ rdfs:label "dc3zo7"^^xsd:string ;' +
+            '            rdfs:comment "(c) Commonwealth of Australia (Geoscience Australia) 2014"^^xsd:string ],' +
+            '        [ rdfs:label "849h9x"^^xsd:string ;' +
+            '            rdfs:comment "(c) Commonwealth of Australia (Geoscience Australia)"^^xsd:string ] ;' +
+            '    rdfs:comment "Geoscience Australia"^^xsd:string ;' +
+            '    ns2:altLabel "GA"^^xsd:string .' +
+            '' +
+            '<http://data.bioregionalassessments.gov.au/id/organisation/GSNSW> a <http://www.w3.org/ns/org#Organization>,' +
+            '        <http://xmlns.com/foaf/0.1/Organization> ;' +
+            '    rdfs:label "Geological Survey of NSW"^^xsd:string ;' +
+            '    rdfs:comment ""^^xsd:string .' +
+            '' +
+            '<http://data.bioregionalassessments.gov.au/id/organisation/GSQ> a <http://www.w3.org/ns/org#Organization>,' +
+            '        <http://xmlns.com/foaf/0.1/Organization> ;' +
+            '    rdfs:label "Geological Survey of Queensland"^^xsd:string ;' +
+            '    ns1:attributionName [ rdfs:label "qmkt90"^^xsd:string ;' +
+            '            rdfs:comment "(c) Geological Survey of Queensland"^^xsd:string ] ;' +
+            '    rdfs:comment ""^^xsd:string .' +
+            '' +
+            '<http://data.bioregionalassessments.gov.au/id/organisation/HDSITIA> a <http://www.w3.org/ns/org#Organization>,' +
+            '        <http://xmlns.com/foaf/0.1/Organization> ;' +
+            '    rdfs:label "Queensland Herbarium, Department of Science, Information Technology, Innovation and the Arts"^^xsd:string ;' +
+            '    ns1:attributionName [ rdfs:label "4rlncv"^^xsd:string ;' +
+            '            rdfs:comment "(c) State of Queensland 2014"^^xsd:string ],' +
+            '        [ rdfs:label "842nvr"^^xsd:string ;' +
+            '            rdfs:comment "(c) State of Queensland 2013"^^xsd:string ] ;' +
+            '    rdfs:comment ""^^xsd:string .' +
+            '' +
+            '<http://data.bioregionalassessments.gov.au/id/organisation/HEPA> a <http://www.w3.org/ns/org#Organization>,' +
+            '        <http://xmlns.com/foaf/0.1/Organization> ;' +
+            '    rdfs:label "Queensland Herbarium, Environment Protection Agency"^^xsd:string ;' +
+            '    ns1:attributionName [ rdfs:label ""^^xsd:string ;' +
+            '            rdfs:comment "(c) "^^xsd:string ] ;' +
+            '    rdfs:comment ""^^xsd:string .' +
+            '' +
+            '<http://data.bioregionalassessments.gov.au/id/organisation/HW> a <http://www.w3.org/ns/org#Organization>,' +
+            '        <http://xmlns.com/foaf/0.1/Organization> ;' +
+            '    rdfs:label "Hunter Water"^^xsd:string ;' +
+            '    rdfs:comment ""^^xsd:string .' +
+            '' +
+            '<http://data.bioregionalassessments.gov.au/id/organisation/LLS> a <http://www.w3.org/ns/org#Organization>,' +
+            '        <http://xmlns.com/foaf/0.1/Organization> ;' +
+            '    rdfs:label "Local Land Services, Trade and Investment NSW"^^xsd:string ;' +
+            '    ns1:attributionName [ rdfs:label "leggvk"^^xsd:string ;' +
+            '            rdfs:comment "Local Land Services, Trade and Investment NSW, Maitland NSW"^^xsd:string ] ;' +
+            '    rdfs:comment "NSW Government"^^xsd:string .' +
+            '' +
+            '<http://data.bioregionalassessments.gov.au/id/organisation/MCW> a <http://www.w3.org/ns/org#Organization>,' +
+            '        <http://xmlns.com/foaf/0.1/Organization> ;' +
+            '    rdfs:label "MidCoast Water"^^xsd:string ;' +
+            '    rdfs:comment ""^^xsd:string .' +
+            '' +
+            '<http://data.bioregionalassessments.gov.au/id/organisation/NNTT> a <http://www.w3.org/ns/org#Organization>,' +
+            '        <http://xmlns.com/foaf/0.1/Organization> ;' +
+            '    rdfs:label "National Native Title Tribunal"^^xsd:string ;' +
+            '    rdfs:comment ""^^xsd:string .' +
+            '' +
+            '<http://data.bioregionalassessments.gov.au/id/organisation/NSWDPI> a <http://www.w3.org/ns/org#Organization>,' +
+            '        <http://xmlns.com/foaf/0.1/Organization> ;' +
+            '    rdfs:label "NSW Department of Primary Industries"^^xsd:string ;' +
+            '    rdfs:comment ""^^xsd:string .' +
+            '' +
+            '<http://data.bioregionalassessments.gov.au/id/organisation/NSWDPII> a <http://www.w3.org/ns/org#Organization>,' +
+            '        <http://xmlns.com/foaf/0.1/Organization> ;' +
+            '    rdfs:label "NSW Department of Planning and Infrastructure"^^xsd:string ;' +
+            '    rdfs:comment ""^^xsd:string .' +
+            '' +
+            '<http://data.bioregionalassessments.gov.au/id/organisation/NSWOoW> a <http://www.w3.org/ns/org#Organization>,' +
+            '        <http://xmlns.com/foaf/0.1/Organization> ;' +
+            '    rdfs:label "NSW Office of Water"^^xsd:string ;' +
+            '    ns1:attributionName [ rdfs:label ""^^xsd:string ;' +
+            '            rdfs:comment "(c) "^^xsd:string ] ;' +
+            '    rdfs:comment ""^^xsd:string .' +
+            '' +
+            '<http://data.bioregionalassessments.gov.au/id/organisation/NTDLRM> a <http://www.w3.org/ns/org#Organization>,' +
+            '        <http://xmlns.com/foaf/0.1/Organization> ;' +
+            '    rdfs:label "NT Department of Land Resource Management"^^xsd:string ;' +
+            '    ns1:attributionName [ rdfs:label "5uj64h"^^xsd:string ;' +
+            '            rdfs:comment "(c) Northern Territory Department of Land Resource Management"^^xsd:string ] ;' +
+            '    rdfs:comment "NT Government"^^xsd:string .' +
+            '' +
+            '<http://data.bioregionalassessments.gov.au/id/organisation/OEH> a <http://www.w3.org/ns/org#Organization>,' +
+            '        <http://xmlns.com/foaf/0.1/Organization> ;' +
+            '    rdfs:label "NSW Office of Environment and Heritage"^^xsd:string ;' +
+            '    ns1:attributionName [ rdfs:label ""^^xsd:string ;' +
+            '            rdfs:comment "(c) "^^xsd:string ] ;' +
+            '    rdfs:comment ""^^xsd:string .' +
+            '' +
+            '<http://data.bioregionalassessments.gov.au/id/organisation/QGIA> a <http://www.w3.org/ns/org#Organization>,' +
+            '        <http://xmlns.com/foaf/0.1/Organization> ;' +
+            '    rdfs:label "Queensland Office of Groundwater Impact Assessment"^^xsd:string ;' +
+            '    ns1:attributionName [ rdfs:label "f8i323"^^xsd:string ;' +
+            '            rdfs:comment "(c) State of Queensland (Office of Groundwater Impact Assessment) 2012"^^xsd:string ] ;' +
+            '    rdfs:comment ""^^xsd:string .' +
+            '' +
+            '<http://data.bioregionalassessments.gov.au/id/organisation/QT> a <http://www.w3.org/ns/org#Organization>,' +
+            '        <http://xmlns.com/foaf/0.1/Organization> ;' +
+            '    rdfs:label "Queensland Treasury"^^xsd:string ;' +
+            '    ns1:attributionName [ rdfs:label ""^^xsd:string ;' +
+            '            rdfs:comment "(c) "^^xsd:string ] ;' +
+            '    rdfs:comment ""^^xsd:string .' +
+            '' +
+            '<http://data.bioregionalassessments.gov.au/id/organisation/QWC> a <http://www.w3.org/ns/org#Organization>,' +
+            '        <http://xmlns.com/foaf/0.1/Organization> ;' +
+            '    rdfs:label "Queensland Water Commission"^^xsd:string ;' +
+            '    ns1:attributionName [ rdfs:label "g3q4yy"^^xsd:string ;' +
+            '            rdfs:comment "(c) The State of Queensland 1995 - 2015"^^xsd:string ] ;' +
+            '    rdfs:comment ""^^xsd:string .' +
+            '' +
+            '<http://data.bioregionalassessments.gov.au/id/organisation/RPSAE> a <http://www.w3.org/ns/org#Organization>,' +
+            '        <http://xmlns.com/foaf/0.1/Organization> ;' +
+            '    rdfs:label "RPS Australia East Pty Ltd"^^xsd:string ;' +
+            '    ns1:attributionName [ rdfs:label ""^^xsd:string ;' +
+            '            rdfs:comment "(c) "^^xsd:string ] ;' +
+            '    rdfs:comment ""^^xsd:string .' +
+            '' +
+            '<http://data.bioregionalassessments.gov.au/id/organisation/SCA> a <http://www.w3.org/ns/org#Organization>,' +
+            '        <http://xmlns.com/foaf/0.1/Organization> ;' +
+            '    rdfs:label "Sydney Catchment Authority"^^xsd:string ;' +
+            '    ns1:attributionName [ rdfs:label ""^^xsd:string ;' +
+            '            rdfs:comment "(c) "^^xsd:string ] ;' +
+            '    rdfs:comment ""^^xsd:string .' +
+            '' +
+            '<http://data.bioregionalassessments.gov.au/id/organisation/SEWPaC> a <http://www.w3.org/ns/org#Organization>,' +
+            '        <http://xmlns.com/foaf/0.1/Organization> ;' +
+            '    rdfs:label "Department of Sustainability, Environment, Water, Population and Communities"^^xsd:string ;' +
+            '    ns1:attributionName [ rdfs:label "rtdhjp"^^xsd:string ;' +
+            '            rdfs:comment "(c) Department of Sustainability, Environment, Water, Population and Communities"^^xsd:string ] ;' +
+            '    rdfs:comment ""^^xsd:string .' +
+            '' +
+            '<http://data.bioregionalassessments.gov.au/id/organisation/VDPI> a <http://www.w3.org/ns/org#Organization>,' +
+            '        <http://xmlns.com/foaf/0.1/Organization> ;' +
+            '    rdfs:label "Victorian Department of Primary Industries"^^xsd:string ;' +
+            '    ns1:attributionName [ rdfs:label ""^^xsd:string ;' +
+            '            rdfs:comment "(c) "^^xsd:string ] ;' +
+            '    rdfs:comment ""^^xsd:string .' +
+            '' +
+            '<http://data.bioregionalassessments.gov.au/id/organisation/WAWC> a <http://www.w3.org/ns/org#Organization>,' +
+            '        <http://xmlns.com/foaf/0.1/Organization> ;' +
+            '    rdfs:label "WA Department of Water"^^xsd:string ;' +
+            '    ns1:attributionName [ rdfs:label "64frwb"^^xsd:string ;' +
+            '            rdfs:comment "(c) State of Western Australia (Department of Water)"^^xsd:string ] ;' +
+            '    rdfs:comment ""^^xsd:string .' +
+            '' +
+            '<http://data.bioregionalassessments.gov.au/id/organisation/WCWA> a <http://www.w3.org/ns/org#Organization>,' +
+            '        <http://xmlns.com/foaf/0.1/Organization> ;' +
+            '    rdfs:label "Water Corporation of WA"^^xsd:string ;' +
+            '    ns1:attributionName [ rdfs:label "844tgf"^^xsd:string ;' +
+            '            rdfs:comment "Western Australia Water Corporation"^^xsd:string ] ;' +
+            '    rdfs:comment ""^^xsd:string .' +
+            '' +
+            '<http://data.bioregionalassessments.gov.au/id/organisation/WGCMA> a <http://www.w3.org/ns/org#Organization>,' +
+            '        <http://xmlns.com/foaf/0.1/Organization> ;' +
+            '    rdfs:label "West Gippsland Catchment Management Authority"^^xsd:string ;' +
+            '    ns1:attributionName [ rdfs:label "9jnwgw"^^xsd:string ;' +
+            '            rdfs:comment "(c) West Gippsland Catchment Management Authority"^^xsd:string ] ;' +
+            '    rdfs:comment ""^^xsd:string .' +
+            '' +
+            '<http://data.bioregionalassessments.gov.au/id/organisation/WSC> a <http://www.w3.org/ns/org#Organization>,' +
+            '        <http://xmlns.com/foaf/0.1/Organization> ;' +
+            '    rdfs:label "Wyong Shire Council"^^xsd:string ;' +
+            '    rdfs:comment ""^^xsd:string .';
+</script>
+<script type="text/javascript">
+    // initialise the in-memory triplestore
+    rdfstore.create(function(err, store) {
+        //load the RDF (turtle) data
+        store.load("text/turtle", org_data, function(err, results) {
+        //store.execute('INSERT DATA { ' + data2 + '  }', function(err){
+            if(!err) {
+                // set the SPARQL query
+                var query = '\
+                        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \
+                        PREFIX org: <http://www.w3.org/ns/org#> \
+                        SELECT ?s ?l WHERE {\
+                               ?s a  org:Organization . \
+                               ?s rdfs:label ?l . \
+                        }';
+                // execute the query
+                store.execute(query, function(err, results) {
+                    // iterate through the resuls
+                    $.each(results, function (index, value) {
+                        $("#orgs").append('<option value="' + value.s.value + '">' + value.l.value + '</option>');
+                    });
+                });
+            }
+        });
+    });
+</script>
+<h3>Complete</h3>
+<select id="orgs"></select>
+</body>
+</html>

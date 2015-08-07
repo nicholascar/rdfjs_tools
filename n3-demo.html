@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    <script type="text/javascript" src="js/n3-browser.min.js" ></script>
+    <script type="text/javascript">
+        $(function() {
+            /*
+            1. use AJAX to get RDF data from somewhere
+            2. used basic N# parser to loop through RDF triples
+            3. filter RDF using simple loops & if statements
+             */
+            // 1. load the Organisations option from the /id/organisation/ register
+            $.ajax({
+                url: 'http://data.bioregionalassessments.gov.au/id/organisation/?_format=text/turtle',
+                success: function (data) {
+                    var orgs = [];
+                    // 2.
+                    N3.Parser().parse(
+                        data,
+                        function (error, triple) {
+                            if (triple) {
+                                // 3.
+                                // if the subject is of type http://www.w3.org/ns/org#Organization, store it
+                                if (triple.object.indexOf('http://www.w3.org/ns/org#Organization') > -1) {
+                                    orgs.push(triple.subject);
+                                // if the subject is not a blank node and has a property of type http://www.w3.org/2000/01/rdf-schema#label, push the subject & object to <select>
+                                } else if (triple.predicate.indexOf('http://www.w3.org/2000/01/rdf-schema#label') > -1) {
+                                    if (!N3.Util.isBlank(triple.subject) && $.inArray(triple.subject, orgs)) {
+                                        var value = triple.subject;
+                                        var text = triple.object.replace('^^<http://www.w3.org/2001/XMLSchema#string>', '').replace(/"/g, '');
+                                        $("#orgs").append('<option value="' + value + '">' + text + '</option>');
+                                    }
+                                }
+                            }
+                        }
+                    );
+                }
+            });
+        });
+    </script>
+    <h3>Complete</h3>
+    <select id="orgs"></select>
+</body>
+</html>
