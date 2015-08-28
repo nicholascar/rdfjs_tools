@@ -59,9 +59,9 @@ define(['rdfstore','async'], function (rdfstore,async) {
                 "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
                 "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> " +
                 "INSERT { <"+subject+"> rdf:type ?parent } " +       //child type human
-                "WHERE { <"+subject+"> rdfs:subClassOf ?parent . " + //child subclassof human
-                        "<"+subject+"> rdf:type ?existing . " +      //child type ?existing
-                "FILTER (?existing != ?parent) }";                //?existing != human
+                "WHERE { <"+subject+"> rdfs:subClassOf ?parent }";// + //child subclassof human
+                 //       "<"+subject+"> rdf:type ?existing . " +      //child type ?existing
+                //"FILTER (?existing != ?parent) }";                //?existing != human
             store.execute(sparql, function (err,results) {
                if (!is_null_or_blank(err)) { callback(err); }
                 else { callback(null,results); }
@@ -73,9 +73,9 @@ define(['rdfstore','async'], function (rdfstore,async) {
                 "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> " +
                 "INSERT { <"+subject+"> ?parent ?o } " +         // tim parent gwen
                 "WHERE { <"+subject+"> ?p ?o . " +               // tim mother gwen
-                         " ?p rdfs:subPropertyOf ?parent . " +   //mother subpropertyof parent
-                        " <"+subject+"> ?parent ?existing . " +  // tim mother ?exiting
-                "FILTER (?existing != ?o) }";                    // ?existing != gwen
+                         " ?p rdfs:subPropertyOf ?parent }";// +   //mother subpropertyof parent
+                //        " <"+subject+"> ?parent ?existing . " +  // tim mother ?exiting
+                //"FILTER (?existing != ?o) }";                    // ?existing != gwen
             store.execute(sparql, function (err,results) {
                 //console.log("subproperty results:");
                 //console.debug(results);
@@ -87,11 +87,12 @@ define(['rdfstore','async'], function (rdfstore,async) {
             var sparql = "" +
                 "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
                 "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> " +
+                //"SELECT * " +
                 "INSERT { ?o rdfs:Class ?rangeclass } " +      // gwen Class adultperson
                 "WHERE { <"+subject+"> ?p ?o . " +               // tim mother gwen
-                       " ?p rdfs:range ?rangeclass . " +         //mother range adultpersion
-                       " ?o rdfs:Class ?existing . " +           // gwen Class ?exiting
-                "FILTER (?existing != ?rangeclass) }";           // ?existing != adultperson
+                       " ?p rdfs:range ?rangeclass } ";// +         //mother range adultpersion
+                       //" ?o rdfs:Class ?existing  }" //+           // gwen Class ?exiting
+                //"FILTER (?existing != ?rangeclass) }";           // ?existing != adultperson
             store.execute(sparql, function (err,results) {
                 //console.log("range results:");
                 //console.debug(results);
@@ -105,9 +106,9 @@ define(['rdfstore','async'], function (rdfstore,async) {
                 "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> " +
                 "INSERT { <"+subject+"> rdfs:Class ?domainc } " + // tim Class child
                 "WHERE { <"+subject+"> ?p ?o . " +                   // tim mother gwen
-                       " ?p rdfs:domain ?domainc . " +               // mother domain child
-                       " <"+subject+"> rdfs:Class ?existing . " +    // tim Class ?exiting
-                "FILTER (?existing != ?domainc) }";               // ?existing != child
+                       " ?p rdfs:domain ?domainc } ";// +               // mother domain child
+                       //" <"+subject+"> rdfs:Class ?existing . " +    // tim Class ?exiting
+                //"FILTER (?existing != ?domainc) }";               // ?existing != child
             store.execute(sparql, function (err,results) {
                 //console.log("domain results:");
                 //console.debug(results);
@@ -186,13 +187,29 @@ define(['rdfstore','async'], function (rdfstore,async) {
                         async.setImmediate(function () { callback2(); });
                         return;
                     }
+                    if (!is_null_or_blank(item.s) && !is_null_or_blank(item.s.value)){
+                        async.setImmediate(function() {
+                            console.log("Applying rules to [s] item "+item.s.value+" recursion level "+recursion);
+                            that._apply_rdfs_rules.call(that, store, item.s.value, function () {
+                                that._applied_to.push(item.s.value);
+                                if (recursion >= 3) {
+                                    callback2(); return;
+                                }
+                                that.apply_entailment(store, item.s.value, recursion + 1, function (err, results) {
+                                    callback2(err);
+                                });
+                            });
+                        });
+                        return;
+                    }
                     var obj = item.c;
-                    if (that._is_entails_done(obj.value)) {
+                    if (that._has_applied_to(obj.value)) {
+                        console.log("Already applied rules to "+obj.value+" skipping whole class.");
                         async.setImmediate(function () { callback2(); });
                         return;
                     }
                     async.setImmediate(function () {
-                        console.log("Applying rules to item "+obj.value);
+                        console.log("Applying rules to [c] item "+obj.value+" recursion level "+recursion);
                         if (obj.token && obj.token == "uri"){
                             load_remote_if_not_present(store, obj.value, function (err,result) {
                                 if (!is_null_or_blank(err)) {

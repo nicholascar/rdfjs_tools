@@ -1,4 +1,31 @@
 <?php
+    const cache_map = array(
+        "http://lov.okfn.org/vocommons/voaf/v2.3/"=>"voaf.ttl",
+        "http://purl.org/vocommons/voaf"=>"voaf.ttl",
+    );
+    function startswith($haystack, $needle) {
+        return substr($haystack, 0, strlen($needle)) === $needle;
+    }
+    function return_cached($cachename) {
+        http_response_code(200);
+        header("Content-Type: text/turtle");
+        header("Access-Control-Allow-Origin: *");
+        $filename = dirname(__FILE__)."/cache/".$cachename;
+        if(!readfile($filename)){
+            die("Could not read the file ".$filename);
+        }
+        exit();
+    }
+    function check_cache($uri){
+        foreach (cache_map as $mapkey => $mapvalue) {
+            if (startswith($uri, $mapkey)) {
+                return_cached($mapvalue);
+            }
+        }
+
+    }
+
+
     if (!isset($_REQUEST['uri'])) {
         die("No URI Specified!");
     }
@@ -6,6 +33,8 @@
     if (empty($uri)) {
         die("No URI Specified!");
     }
+
+    check_cache($uri);
 
     $custom_headers = [];
 
@@ -25,6 +54,7 @@
     curl_setopt($req, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($req, CURLOPT_VERBOSE, 1);
     curl_setopt($req, CURLOPT_HEADER, 1);
+    curl_setopt($req, CURLOPT_FOLLOWLOCATION, true);
 
     $resp = curl_exec($req);
     $header_size = curl_getinfo($req, CURLINFO_HEADER_SIZE);
@@ -32,7 +62,17 @@
     $headers = explode("\n",$header);
     $body = substr($resp, $header_size);
 
+    $httpcode = curl_getinfo($req, CURLINFO_HTTP_CODE);
+    if ($httpcode != 200) {
+        die("Code = " . $httpcode);
+    }
     foreach ($headers as $h) {
+        if (startswith($h, "Set-Cookie") ||
+            startswith($h, "Transfer-Encoding") ||
+            startswith($h, "Access-Control")
+            ) {continue;}
         header($h);
     }
+    header("Access-Control-Allow-Origin: *");
+    http_response_code($httpcode);
     echo $body;

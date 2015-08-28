@@ -3,10 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <title>CSIRO IAP RDFStore.js demo1</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
     <script src="js/jquery.min.js"></script>
 </head>
 <body>
 
+    <div class="container">
+        <div class="row"></div>
+        <div class="row">
+            <div class="col-lg-12">
+                <p>Current Status: <span id="status">Loading App...</span></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="form-group">
+                    <label for="sparql">Input Sparql</label>
+                    <textarea id="sparql" class="form-control" readonly="readonly"></textarea>
+                    <input type="button" id="sparqlbutton" class="form-control btn btn-default" value="Evaluate" disabled="disabled" />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="form-group">
+                    <label for="output">Output</label>
+                    <textarea id="output" class="form-control" readonly="readonly"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
     <!--<script src="{{ url_for('static',filename="js/rdfstore.js") }}"></script>-->
     <script type="text/javascript">
         var require = {
