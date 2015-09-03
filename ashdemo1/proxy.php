@@ -1,7 +1,17 @@
 <?php
     const cache_map = array(
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns" => "rdf.ttl",
+        "http://www.w3.org/2000/01/rdf-schema" => "rdfs.ttl",
+        "http://www.w3.org/2002/07/owl" => "owl.ttl",
         "http://lov.okfn.org/vocommons/voaf/v2.3/"=>"voaf.ttl",
         "http://purl.org/vocommons/voaf"=>"voaf.ttl",
+        "http://vocab.deri.ie/void" => "void.ttl",
+        "http://rdfs.org/ns/void" => "void.ttl",
+        "http://purl.org/vocab/frbr/core" => "frbr.core.ttl",
+        "http://www.w3.org/ns/adms" => "adms.ttl",
+        "http://www.w3.org/ns/dcat" => "dcat.ttl",
+        "http://purl.org/dc/dcmitype/" => "dcmi.ttl",
+
     );
     function startswith($haystack, $needle) {
         return substr($haystack, 0, strlen($needle)) === $needle;
