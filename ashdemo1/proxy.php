@@ -11,6 +11,8 @@
         "http://www.w3.org/ns/adms" => "adms.ttl",
         "http://www.w3.org/ns/dcat" => "dcat.ttl",
         "http://purl.org/dc/dcmitype/" => "dcmi.ttl",
+        "http://purl.org/dc/terms/" => "dcterms.ttl",
+        "http://xmlns.com/foaf/0.1/" => "foaf.ttl"
 
     );
     function startswith($haystack, $needle) {
