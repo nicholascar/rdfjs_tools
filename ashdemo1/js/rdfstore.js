@@ -19281,7 +19281,7 @@ Lexicon.prototype.registerBlank = function(callback) {
     var oid = this.oidCounter;
     this.oidCounter++;
     var oidStr = ""+oid;
-    this.oidBlanks.insert(oidStr, oidStr, function(){
+    this.oidBlanks.insert(oidStr, oid, function(){
         callback(oid);
     })
 };
@@ -19301,7 +19301,7 @@ Lexicon.prototype.resolveBlank = function(label,callback) {
             // ??
             var oid = that.oidCounter;
             this.oidCounter++;
-            callback(""+oid);
+            callback(oid);
             //
         }
     });
@@ -24342,7 +24342,7 @@ QueryEngine.prototype.normalizeTerm = function(term, env, shouldIndex, callback)
             } else {
                 // should never get here...
                 // is resolveBlank useful?
-                this.lexicon.resolveBlank(function(oid) {
+                this.lexicon.resolveBlank(label, function(oid) {
                     env.blanks[label] = oid;
                     callback(oid);
                 });
@@ -29158,7 +29158,7 @@ var nextTick = (function () {
     else if(typeof process !== 'undefined')
         global = process;
 
-
+    var canPromise = typeof global !== 'undefined' && global.Promise;
     var canSetImmediate = typeof global !== 'undefined' && global.setImmediate;
     var canPost = typeof global !== 'undefined' && global.postMessage && global.addEventListener;
 
@@ -29172,6 +29172,13 @@ var nextTick = (function () {
             return _dereq_('timers').setImmediate;
         else
             return global.nextTick;
+    }
+
+    if (canPromise) {
+        var promise = global.Promise.resolve();
+        return function (f) {
+            promise.then(f);
+        }
     }
 
     // postMessage
