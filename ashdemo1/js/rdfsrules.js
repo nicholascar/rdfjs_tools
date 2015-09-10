@@ -158,6 +158,19 @@ define(['rdfstore','async'], function (rdfstore,async) {
             if (typeof recursion == "undefined" || recursion === null) {
                 recursion = 0;
             }
+            var apply_rules_to = function(s, cb) {
+                that._apply_rdfs_rules.call(that, store, s, function () {
+                    that._applied_to.push(s);
+                    if (recursion >= 3) {
+                        cb();
+                    } else {
+                        that.apply_entailment(store, s, recursion + 1, function (err, results) {
+                            cb(err);
+                        });
+                    }
+                });
+            };
+
             async.waterfall([function (callback) {
                 if (recursion > 3) {
                     callback("recursion too deep!");
@@ -165,9 +178,15 @@ define(['rdfstore','async'], function (rdfstore,async) {
                     that._load_prereqs(store, function (err) {
                         if (!is_null_or_blank(err)) {
                             callback(err);
-                        }
-                        else {
-                            callback();
+                        } else {
+                            if (!that._has_applied_to(subject)) {
+                                that._apply_rdfs_rules.call(that, store, subject, function (err) {
+                                    that._applied_to.push(subject);
+                                    callback(err);
+                                });
+                            } else {
+                                callback();
+                            }
                         }
                     });
                 } else {
@@ -199,18 +218,7 @@ define(['rdfstore','async'], function (rdfstore,async) {
                     }
                 });
             },function (results,callback) {
-                var apply_rules_to = function(subject2, cb) {
-                    that._apply_rdfs_rules.call(that, store, subject2, function () {
-                        that._applied_to.push(subject2);
-                        if (recursion >= 3) {
-                            cb();
-                        } else {
-                            that.apply_entailment(store, subject2, recursion + 1, function (err, results) {
-                                cb(err);
-                            });
-                        }
-                    });
-                };
+
                 async.eachSeries(results,function (item,callback2) {
                     //Skip it if there was no object
                     if (is_null_or_blank(item) || is_null_or_blank(item.c)){
@@ -247,7 +255,6 @@ define(['rdfstore','async'], function (rdfstore,async) {
                                 } else {
                                     apply_rules_to(s, callback2);
                                 }
-
                             });
                         } else {
                             apply_rules_to(s,callback2);
