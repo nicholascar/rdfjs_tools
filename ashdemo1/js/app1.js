@@ -110,7 +110,8 @@ function run_demo(store) {
         $('#status').text("Loading the rdfsrules.js file.");
         require(["rdfsrules"], function (rdfsrules) {
             $('#status').text("Applying Entailment (rdfs inferences) please wait...");
-            rdfsrules.apply_entailment(store, null, null, function () {
+            //rdfsrules.apply_entailment(store, null, null, function () {
+            rdfsrules.apply_entailment(store, "<http://scikey.org/def/vocab#Vocabulary>", null, function () {
                 callback();
             });
         });
