@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CSIRO IAP RDFStore.js Vocab Demo</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <script src="js/jquery.min.js"></script>
+</head>
+<body>
+
+    <div class="container" id="page-container">
+        <div class="row"></div>
+        <div class="row">
+            <div class="col-lg-12">
+                <p>Current Status: <span id="status">Loading App...</span></p>
+            </div>
+        </div>
+    </div>
+    <!--<script src="{{ url_for('static',filename="js/rdfstore.js") }}"></script>-->
+    <script type="text/javascript">
+        var require = {
+            baseUrl: "./js/",
+        };
+    </script>
+    <script type="text/javascript" data-main="app2.js" src="js/require.min.js"></script>
+</body>
+</html>
