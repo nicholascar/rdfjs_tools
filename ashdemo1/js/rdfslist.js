@@ -3,7 +3,7 @@ define(['async'], function (async) {
     };
 
     var extract_subject_as_hashmap = function(store, subject, callback){
-        var returnObject = [];
+        var returnObject = {};
         var sparql = "SELECT * WHERE { "+subject+" ?p ?o }";
         store.execute(sparql, function(err,results){
             if (err) {callback(err);}
@@ -53,16 +53,9 @@ define(['async'], function (async) {
                             if (f.token && f.token == "uri") {
                                 s = "<"+ f.value + ">";
                             }
-                            extract_subject_as_hashmap(store, s, function(err,result){
-                                f = null;
-                                if (err) {callback3(err);}
-                                else if (typeof (result) == "undefined" || result === null) {
-                                    callback3();
-                                } else {
-                                    objects.push(result);
-                                    callback3();
-                                }
-                            });
+                            objects.push(s);
+                            f = null;
+                            callback3();
                         };
 
                         if (f === null || f === false) {
@@ -98,9 +91,9 @@ define(['async'], function (async) {
             });
         }],function(err){
             if (err) { callback(err); }
-            else {callback(objects);}
+            else {callback(null,objects);}
         });
     };
-    return rdflist;
+    return new rdflist;
 });
 
