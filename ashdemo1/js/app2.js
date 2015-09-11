@@ -1,23 +1,29 @@
 var async = null;
 
-function sparql_run(store,sparql,callback){
-    store.execute(sparql, callback);
-}
-
-function format_results(results)
+function add_requirement_row(store, req, callback)
 {
-    var str = "";
-    for (var x = 0,l=results.length; x<l; x++) {
-        var res = results[x];
-        var conts = Object.keys(res);
-        for (var y = 0,l2=conts.length; y<l2; y++) {
-            var cont = conts[y];
-            var param = res[cont];
-            str += ""+cont+" = " + param.value + ", ";
+    var rowhead = "<div class=\"row\"><div class=\"col-lg-12\">";
+    var rowtail = "<hr /></div></div>";
+    var rowtitle = "<h2>Requirement obj "+req.o.value+"</h2>";
+    var write = function(r) {
+        var str = "";
+        for (var x= 0,l= r.length; x<l; x++)
+        {
+            str = str+"p = " + r[x].p.value + ", o = " + r[x].o.value + "<br />";
         }
-        str += "\n";
+        $("#page-container").append(rowhead + rowtitle + str + rowtail);
+    };
+
+    var s = req.o.value;
+    if (req.o.token && req.o.token == "uri") {
+        s = "<"+req.o.value+">";
     }
-    return str;
+    var sparql = "SELECT * WHERE { "+s+" ?p ?o }";
+    store.execute(sparql, function (err, results) {
+        if (err) {callback(); return;}
+        write(results);
+        callback();
+    });
 }
 
 function load_ontology(ontology, store, recursion, callback)
@@ -89,10 +95,6 @@ function run_demo2(store) {
         load_ontology("http://scikey.org/def/vocab",store,null,function(err){
             callback(err);
         });
-        //$('#status').text("Loading http://scikey.org/def/vocab into graph.");
-        //store.load('remote','http://scikey.org/def/vocab',function(err,result){
-        //    if (err || result==null) { callback(err); } else { callback(); }
-        //});
     },function(callback) {
         $('#status').text("Checking that uri loaded and we can do sparql query on our graph store.");
         store.execute("" +
@@ -111,8 +113,8 @@ function run_demo2(store) {
         $('#status').text("Loading the rdfsrules.js file.");
         require(["rdfsrules"], function (rdfsrules) {
             $('#status').text("Applying Entailment (rdfs inferences) please wait...");
-            //rdfsrules.apply_entailment(store, null, null, function () {
-            rdfsrules.apply_entailment(store, "<http://scikey.org/def/vocab#Vocabulary>", null, function () {
+            var options = {recursion_max: 2};
+            rdfsrules.apply_entailment(store, "<http://scikey.org/def/vocab#Vocabulary>", options, function () {
                 callback();
             });
         });
@@ -129,27 +131,16 @@ function run_demo2(store) {
             if (err) {
                 callback(err);
             } else {
-                callback();
+                async.eachSeries(results, function (item,callback2) {
+                    async.setImmediate(function(){
+                       add_requirement_row(store, item, callback2);
+                    });
+                }, callback);
             }
         });
     },function(callback) {
-        $('#status').text("Testing List collection");
-        store.execute("" +
-            "PREFIX    :<http://scikey.org/def/vocab#> " +
-            "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-            "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> " +
-            "SELECT * { ?s rdfs:Class rdf:List } ", function (err, results) {
-            console.log("Found Lists:");
-            console.debug(results);
-            if (err) {
-                callback(err);
-            } else {
-                callback();
-            }
-        });
-    },function(callback) {
-
-        callback();
+        /* this is a dummy series item, at the end of the sequence. */
+       callback();
     }]);
 }
 
