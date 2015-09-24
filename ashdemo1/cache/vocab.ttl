@@ -1,0 +1,133 @@
+# baseURI: http://scikey.org/def/vocab
+# imports: http://purl.org/dc/elements/1.1/
+# imports: http://purl.org/dc/terms/
+# imports: http://purl.org/vocommons/voaf
+# imports: http://schema.theodi.org/odrs
+# imports: http://www.w3.org/2004/02/skos/core
+# imports: http://www.w3.org/ns/adms
+# imports: http://www.w3.org/ns/dcat
+# imports: http://xmlns.com/foaf/0.1/
+
+@prefix :        <http://scikey.org/def/vocab#> .
+@prefix adms:    <http://www.w3.org/ns/adms#> .
+@prefix dc:      <http://purl.org/dc/elements/1.1/> .
+@prefix dcat:    <http://www.w3.org/ns/dcat#> .
+@prefix dct:     <http://purl.org/dc/terms/> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix voaf:    <http://purl.org/vocommons/voaf#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+
+<http://scikey.org/def/vocab>
+      rdf:type owl:Ontology ;
+      dc:creator "Nicholas Car"^^xsd:string ;
+      dc:rights "(c) CSIRO 2015"^^xsd:string ;
+      owl:imports dc: , <http://www.w3.org/ns/adms> , <http://xmlns.com/foaf/0.1/> , dct: , <http://www.w3.org/2004/02/skos/core> , <http://www.w3.org/ns/dcat> , <http://purl.org/vocommons/voaf> , <http://schema.theodi.org/odrs> ;
+      owl:versionIRI <http://scikey.org/def/vocab/1.0> .
+
+:Vocabulary
+      rdf:type owl:Class ;
+      rdfs:label "SciKey Vocabulary"^^xsd:string ;
+      rdfs:subClassOf voaf:Vocabulary , adms:Asset ;
+      rdfs:subClassOf
+              [ rdf:type owl:Restriction ;
+                owl:cardinality "1"^^xsd:nonNegativeInteger ;
+                owl:onProperty dct:created
+              ] ;
+      rdfs:subClassOf
+              [ rdf:type owl:Restriction ;
+                owl:allValuesFrom <http://xmlns.com/foaf/0.1/Agent> ;
+                owl:onProperty dct:creator
+              ] ;
+      rdfs:subClassOf
+              [ rdf:type owl:Restriction ;
+                owl:cardinality "1"^^xsd:nonNegativeInteger ;
+                owl:onProperty dct:rights
+              ] ;
+      rdfs:subClassOf
+              [ rdf:type owl:Restriction ;
+                owl:allValuesFrom <http://schema.theodi.org/odrs#License> ;
+                owl:onProperty dct:license
+              ] ;
+      rdfs:subClassOf
+              [ rdf:type owl:Restriction ;
+                owl:allValuesFrom xsd:date ;
+                owl:onProperty dct:issued
+              ] ;
+      rdfs:subClassOf
+              [ rdf:type owl:Restriction ;
+                owl:allValuesFrom xsd:date ;
+                owl:onProperty dct:created
+              ] ;
+      rdfs:subClassOf
+              [ rdf:type owl:Restriction ;
+                owl:cardinality "1"^^xsd:nonNegativeInteger ;
+                owl:onProperty dct:description
+              ] ;
+      rdfs:subClassOf
+              [ rdf:type owl:Restriction ;
+                owl:cardinality "1"^^xsd:nonNegativeInteger ;
+                owl:onProperty adms:status
+              ] ;
+      rdfs:subClassOf
+              [ rdf:type owl:Restriction ;
+                owl:allValuesFrom <http://schema.theodi.org/odrs#RightsStatement> ;
+                owl:onProperty dct:rights
+              ] ;
+      rdfs:subClassOf
+              [ rdf:type owl:Restriction ;
+                owl:cardinality "1"^^xsd:nonNegativeInteger ;
+                owl:onProperty dct:license
+              ] ;
+      rdfs:subClassOf
+              [ rdf:type owl:Restriction ;
+                owl:cardinality "1"^^xsd:nonNegativeInteger ;
+                owl:onProperty dct:creator
+              ] ;
+      rdfs:subClassOf
+              [ rdf:type owl:Restriction ;
+                owl:allValuesFrom <http://www.w3.org/2004/02/skos/core#Concept> ;
+                owl:onProperty adms:status
+              ] ;
+      rdfs:subClassOf
+              [ rdf:type owl:Restriction ;
+                owl:allValuesFrom dcat:Distribution ;
+                owl:onProperty dcat:distribution
+              ] ;
+      rdfs:subClassOf
+              [ rdf:type owl:Restriction ;
+                owl:allValuesFrom xsd:string ;
+                owl:onProperty dct:description
+              ] ;
+      rdfs:subClassOf
+              [ rdf:type owl:Restriction ;
+                owl:cardinality "1"^^xsd:nonNegativeInteger ;
+                owl:onProperty dct:license
+              ] ;
+      rdfs:subClassOf
+              [ rdf:type owl:Restriction ;
+                owl:cardinality "1"^^xsd:nonNegativeInteger ;
+                owl:onProperty dct:issued
+              ] ;
+      rdfs:subClassOf
+              [ rdf:type owl:Restriction ;
+                owl:allValuesFrom adms:AssetDistribution ;
+                owl:onProperty dcat:distribution
+              ] ;
+      rdfs:subClassOf
+              [ rdf:type owl:Restriction ;
+                owl:cardinality "1"^^xsd:nonNegativeInteger ;
+                owl:onProperty dct:modified
+              ] ;
+      rdfs:subClassOf
+              [ rdf:type owl:Restriction ;
+                owl:allValuesFrom voaf:VocabularySpace ;
+                owl:onProperty dct:isPartOf
+              ] ;
+      rdfs:subClassOf
+              [ rdf:type owl:Restriction ;
+                owl:allValuesFrom xsd:date ;
+                owl:onProperty dct:modified
+              ] ;
+      owl:equivalentClass <http://www.w3.org/2004/02/skos/core#ConceptScheme> .
