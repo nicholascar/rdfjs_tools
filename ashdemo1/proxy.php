@@ -15,15 +15,21 @@
         "http://purl.org/dc/elements/1.1/" => "dcelements.ttl",
         "http://xmlns.com/foaf/0.1/" => "foaf.ttl",
         "http://www.w3.org/2004/02/skos/core" => "skos.ttl",
+        "http://scikey.org/def/vocab" => "vocab.ttl",
     );
+    const sample_map = array(
+     "example1" => "example1.ttl",
+    );
+
+
     function startswith($haystack, $needle) {
         return substr($haystack, 0, strlen($needle)) === $needle;
     }
-    function return_cached($cachename) {
+    function return_cached($cachename, $dir="cache") {
         http_response_code(200);
         header("Content-Type: text/turtle");
         header("Access-Control-Allow-Origin: *");
-        $filename = dirname(__FILE__)."/cache/".$cachename;
+        $filename = dirname(__FILE__)."/".$dir."/".$cachename;
         if(!readfile($filename)){
             die("Could not read the file ".$filename);
         }
@@ -37,6 +43,18 @@
         }
 
     }
+    function check_samples($uri) {
+        if (startswith($uri,"http://example.org/")) {
+            $filename = substr($uri,19);
+        } else {
+            return false;
+        }
+        foreach (sample_map as $mapkey => $mapvalue) {
+            if (startswith($filename, $mapkey)) {
+                return_cached($mapvalue, "samples");
+            }
+        }
+    }
 
 
     if (!isset($_REQUEST['uri'])) {
@@ -46,7 +64,7 @@
     if (empty($uri)) {
         die("No URI Specified!");
     }
-
+    check_samples($uri);
     check_cache($uri);
 
     $custom_headers = [];

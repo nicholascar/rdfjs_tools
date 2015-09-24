@@ -1,0 +1,120 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix dc: <http://purl.org/dc/terms/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix voaf: <http://purl.org/vocommons/voaf#> .
+@prefix vocab: <http://scikey.org/def/vocab#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix : <http://example.org/example1#> .
+
+<http://example.org/example1>
+  a owl:Ontology, vocab:Vocabulary ;
+  owl:imports dc: , <http://scikey.org/def/vocab> ;
+  dc:title "Ash's Example Vocabulary"@en ;
+  dc:issued "2015-09-17"^^xsd:date ;
+  dc:modified "2015-09-24"^^xsd:date ;
+  dc:description "Ash's Example Vocabulary"@en .
+
+:School
+  dc:title "School"@en ;
+  dc:description "This class defines an object which is a school."@en ;
+  a owl:Class ;
+  rdfs:subClassOf [ rdf:type owl:Restriction ;
+                    owl:cardinality "1"^^xsd:nonNegativeInteger ;
+                    owl:onProperty :schoolName
+                  ] ;
+  rdfs:subClassOf [ rdf:type owl:Restriction ;
+                    owl:cardinality "1"^^xsd:nonNegativeInteger ;
+                    owl:onProperty :attendants
+                  ] ;
+  owl:unionOf ( _:res1 _:res2 ) .
+
+:HighSchool
+  dc:title "High School"@en ;
+  dc:description "This class defines a high school object, which is a subclass of a School."@en ;
+  a owl:Class ;
+  rdfs:subClassOf :School .
+
+:Person
+  a owl:Class .
+
+:Student
+  a owl:Class ;
+  dc:title "Student"@en ;
+  dc:description "This class defines an object which is a Student."@en ;
+  rdfs:subClassOf :Person ;
+  rdfs:subClassOf [ rdf:type owl:Restriction ;
+                    owl:cardinality "1"^^xsd:nonNegativeInteger ;
+                    owl:onProperty :attends
+                  ] ;
+  rdfs:subClassOf [ rdf:type owl:Restriction ;
+                    owl:cardinality "1"^^xsd:nonNegativeInteger ;
+                    owl:onProperty :studentName
+                  ] .
+
+:studentName
+  rdfs:subPropertyOf dc:title ;
+  rdfs:domain :Student ;
+  rdfs:range rdfs:Literal .
+
+:schoolName
+  rdfs:subPropertyOf dc:title ;
+  rdfs:domain :School ;
+  rdfs:range rdfs:Literal .
+
+:attendants
+  rdfs:domain :School ;
+  rdfs:range xsd:nonNegativeInteger .
+
+:attends
+  rdfs:domain :Student ;
+  rdfs:range :School .
+
+:reliesOn
+  rdfs:domain :School ;
+  rdfs:range :School .
+
+:usedBy
+  rdfs:domain :School ;
+  rdfs:range :School .
+
+:Alpha
+  a :School ;
+  :schoolName "Alpha State School" .
+
+:Beta
+  a :School ;
+  :schoolName "Beta State School" .
+
+:Gamma
+  a :HighSchool ;
+  :schoolName "Gamma Grammar School" .
+
+:Delta
+  a :HighSchool ;
+  :schoolName "Delta State High School" .
+
+:Tim
+  a :Student ;
+  :studentName "Tim" ;
+  :attends :Delta .
+
+:Joe
+  a :Student ;
+  :studentName "Joe" ;
+  :attends :Gamma .
+
+:Mary
+  a :Person ;
+  dc:title "Mary" .
+
+_:res1
+  a owl:Restriction ;
+  owl:minCardinality "1" ;
+  owl:onProperty :reliesOn .
+
+_:res2
+  a owl:Restriction ;
+  owl:minCardinality "1" ;
+  owl:onProperty :usedBy .
