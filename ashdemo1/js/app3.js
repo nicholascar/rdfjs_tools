@@ -8,10 +8,10 @@ var apply_rdfutil = function(rdfutil)
 };
 function run_example1(store) {
     async.waterfall([function (callback) {
-        util.load_ontology("http://example.org/example1",store,null,function(err){
+        util.load_ontology("http://example.org/example1", store, null, function (err) {
             callback(err,{});
         });
-    },function(results,callback) {
+    },function (results,callback) {
         $('#status').text("Checking that uri loaded and we can do sparql query on our graph store.");
         store.execute("" +
             "PREFIX    :<http://example.org/example1#> " +
@@ -33,16 +33,16 @@ function run_example1(store) {
                 callback();
             });
         });
-    },*/function(results,callback) {
+    },*/function (results,callback) {
         $('#status').text("Building form for type");
         require(['rdfforms'],function (rdfforms) {
             rdfforms.create_form_for_class(store, "<http://example.org/example1#School>", callback);
         });
-    },function(results,callback) {
+    },function (results,callback) {
         $('#status').text("Done");
         $('#generated_form').html(results);
-    },function(callback) {
-        /* this is a dummy series item, at the end of the sequence. */
+    },function (callback) {
+        /* this is a dummy series item, marks the end of the sequence. */
        callback();
     }]);
 }
