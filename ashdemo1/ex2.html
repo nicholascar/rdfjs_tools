@@ -25,13 +25,23 @@
         <p>This is an automatically generated form.</p>
         <p>Please fill in the fields below to create a new instance of <%=title || "this class" %></p>
     </script>
-
+    <script type="text/html" id="tmpl_form_html">
+        <form class="form-horizontal" action="." method="post">
+            <fieldset><legend>Legend here</legend>
+                <%=formrows %>
+            </fieldset>
+        </form>
+    </script>
     <script type="text/html" id="tmpl_example_field">
         <div class="form-group">
-            <label class="control-label"><%=fieldlabel %></label>
-            <div class="input-group">
-                <input type="text" name="<%=fieldname %>" class="form-control" />
-                <div class="input-group-addon"><%=rangetext || "Any" %></div>
+            <div class="col-lg-4">
+                <label class="control-label"><%=fieldlabel %></label>
+            </div>
+            <div class="col-lg-8">
+                <div class="input-group">
+                    <input type="text" name="<%=fieldname %>" class="form-control" />
+                    <div class="input-group-addon"><%=rangetext || "Any" %></div>
+                </div>
             </div>
         </div>
     </script>
