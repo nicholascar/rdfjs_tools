@@ -105,6 +105,7 @@
   ns2:alternate <http://purl.org/vocommons/voaf/v1.0/index.html> .
 
 <http://purl.org/vocommons/voaf/v1.0/index.html> a ns2:Manifestation .
+
 ns1:Vocabulary
   a owl:Class ;
   rdfs:label "Vocabulary"@en, "Vocabulaire"@fr ;
