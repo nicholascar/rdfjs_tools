@@ -1,4 +1,4 @@
-var util,async,rdfsrules;
+var util,async;
 var is_null_or_blank;
 var apply_rdfutil = function (rdfutil)
 {
@@ -78,15 +78,18 @@ var _create_form_field_row_from_property = function (store, property, requiremen
 
 var _create_form_from_requirements = function (store, info, requirements, callback) {
     var html;
+    var rows;
     require(['tmpl'],function (tmpl) {
         tmpl = tmpl.tmpl;
         html = tmpl('tmpl_form_header',info);
+        rows = "";
         async.forEachOfSeries(requirements['direct'], function (item, key, feocallback) {
             _create_form_field_row_from_property(store, key,item, function (err,row) {
-                html += row;
+                rows += row;
                 feocallback();
             });
         },function (err,results) {
+            html += tmpl("tmpl_form_html",{formrows:rows});
             callback(err,html);
         });
     });
