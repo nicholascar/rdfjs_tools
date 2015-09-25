@@ -7,16 +7,19 @@ var apply_rdfutil = function (rdfutil)
 };
 
 var _get_full_class_info = function (store,klass,callback) {
-    var title,description;
+    var title,description,label;
     var uri = klass.replace('<','').replace('>','');
     var sparql = "" +
             "PREFIX dc10:<http://purl.org/dc/elements/1.0/> "+
             "PREFIX dc11:<http://purl.org/dc/elements/1.1/> "+
-            "SELECT ?title ?desc " +
-            "WHERE { { %s dc10:title ?title } "+
-            " UNION { %s dc11:title ?title } . "+
+            "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> " +
+            "SELECT ?title ?desc ?label " +
+            "WHERE { %s a ?z . " +
+            "OPTIONAL { { %s dc10:title ?title } "+
+            " UNION { %s dc11:title ?title } } . "+
             "OPTIONAL { { %s dc10:description ?desc } "+
-            " UNION { %s dc11:description ?desc } } } ";
+            " UNION { %s dc11:description ?desc } } . "+
+            "OPTIONAL { %s rdfs:label ?label } }";
     sparql = sparql.replace(/\%s/g,klass);
     store.execute(sparql,function (err,results) {
         console.debug(results);
@@ -34,11 +37,17 @@ var _get_full_class_info = function (store,klass,callback) {
                         description = results[x].desc.value;
                     }
                 }
-                if (!is_null_or_blank(title) && !is_null_or_blank(description))
+                if (!is_null_or_blank(results[x].label)){
+                    if (!is_null_or_blank(results[x].label.token) &&
+                        results[x].label.token == "literal" ) {
+                        label = results[x].label.value;
+                    }
+                }
+                if (!is_null_or_blank(title) && !is_null_or_blank(description) && !is_null_or_blank(label))
                 { break; }
             }
         }
-        callback(err,{uri: uri, title: title, description: description});
+        callback(err,{uri: uri, title: title, description: description, label: label});
     } );
 };
 
