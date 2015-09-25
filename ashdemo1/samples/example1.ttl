@@ -18,6 +18,7 @@
 
 :School
   dc:title "School"@en ;
+  rdfs:label "School."@en ;
   dc:description "This class defines an object which is a school."@en ;
   a owl:Class ;
   rdfs:subClassOf [ rdf:type owl:Restriction ;

@@ -19,7 +19,7 @@
     </div>
 
     <script type="text/html" id="tmpl_form_header">
-        <h1><%=title || "Untitled Class" %></h1>
+        <h1><%=title || (label || "Untitled Class") %></h1>
         <p><%=description || "" %></p>
         <p>URI: <%=uri%></p>
         <p>This is an automatically generated form.</p>
