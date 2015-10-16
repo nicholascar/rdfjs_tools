@@ -8,37 +8,15 @@ var apply_rdfutil = function(rdfutil)
 };
 function run_example1(store) {
     async.waterfall([function (callback) {
-        //util.load_ontology("http://scikey.org/def/vocab", store, null, function (err) {
-        util.load_ontology("http://example.org/example1", store, null, function (err) {
+        util.load_ontology("http://scikey.org/def/vocab", store, null, function (err) {
+        //util.load_ontology("http://example.org/example1", store, null, function (err) {
                 callback(err,{});
         });
-    },/*function (results,callback) {
-        $('#status').text("Checking that uri loaded and we can do sparql query on our graph store.");
-        store.execute("" +
-            "PREFIX    :<http://scikey.org/def/vocab#> " +
-            "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-            "SELECT * { :Vocabulary rdf:type ?o } ", function (err, results2) {
-            console.log("Loaded Scikey Vocabulary RDF from TTL into Store");
-            if (err) {
-                callback(err);
-            } else {
-                callback(null,{});
-            }
-        });
-    },*//*function(callback) {
-        $('#status').text("Loading the rdfsrules.js file.");
-        require(["rdfsrules"], function (rdfsrules) {
-            $('#status').text("Applying Entailment (rdfs inferences) please wait...");
-            var options = {recursion_max: 2};
-            rdfsrules.apply_entailment(store, "<http://example.org/example1#School>", options, function () {
-                callback();
-            });
-        });
-    },*/function (results,callback) {
+    },function (results,callback) {
         $('#status').text("Building form for type");
         require(['rdfforms'],function (rdfforms) {
-            //rdfforms.create_form_for_class(store, "<http://scikey.org/def/vocab#Vocabulary>", callback);
-            rdfforms.create_form_for_class(store, "<http://example.org/example1#School>", callback);
+            rdfforms.create_form_for_class(store, "<http://scikey.org/def/vocab#Vocabulary>", callback);
+            //rdfforms.create_form_for_class(store, "<http://example.org/example1#Student>", callback);
         });
     },function (results,callback) {
         $('#status').text("Done");

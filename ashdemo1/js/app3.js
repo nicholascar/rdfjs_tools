@@ -39,8 +39,11 @@ function run_example1(store) {
             rdfforms.create_form_for_class(store, "<http://example.org/example1#School>", callback);
         });
     },function (results,callback) {
-        $('#status').text("Done");
-        $('#generated_form').html(results);
+      $('#status').text("Done");
+      var id = results['id'];
+      var html = results['html'];
+      $('#generated_form').html(html);
+      async.setImmediate(function () {$(document).trigger('rdf_form_created',[id]);});
     },function (callback) {
         /* this is a dummy series item, marks the end of the sequence. */
        callback();
@@ -65,4 +68,3 @@ define(
         console.debug('demo app started');
     }
 );
-
