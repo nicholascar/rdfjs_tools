@@ -1,0 +1,18 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix dc: <http://purl.org/dc/terms/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix voaf: <http://purl.org/vocommons/voaf#> .
+@prefix vocab: <http://scikey.org/def/vocab#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix admns: <http://www.w3.org/ns/adms#> .
+@prefix : <http://example.org/sampleitems#> .
+
+<http://example.org/sampleitems>
+  a owl:Ontology .
+
+:mydistrib
+  a dcat:Distribution ;
+  a admns:AssetDistribution .

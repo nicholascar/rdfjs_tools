@@ -92,18 +92,8 @@
               ] ;
       rdfs:subClassOf
               [ rdf:type owl:Restriction ;
-                owl:allValuesFrom dcat:Distribution ;
-                owl:onProperty dcat:distribution
-              ] ;
-      rdfs:subClassOf
-              [ rdf:type owl:Restriction ;
                 owl:allValuesFrom xsd:string ;
                 owl:onProperty dct:description
-              ] ;
-      rdfs:subClassOf
-              [ rdf:type owl:Restriction ;
-                owl:cardinality "1"^^xsd:nonNegativeInteger ;
-                owl:onProperty dct:license
               ] ;
       rdfs:subClassOf
               [ rdf:type owl:Restriction ;

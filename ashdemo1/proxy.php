@@ -19,6 +19,7 @@
     );
     const sample_map = array(
      "example1" => "example1.ttl",
+     "sampleitems" => "sampleitems.ttl",
     );
 
 
