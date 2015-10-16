@@ -1,26 +1,14 @@
 var util, async;
 var is_null_or_blank;
+var load_remote_if_not_present;
 var apply_rdfutil = function(rdfutil)
 {
     util = rdfutil;
     is_null_or_blank = util.is_null_or_blank;
+    load_remote_if_not_present = util.load_remote_if_not_present;
 };
 
-function load_remote_if_not_present(store,uri,callback) {
-    var sparql = "" +
-        "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-        "SELECT ?t WHERE { <"+uri+"> rdf:type ?t }";
-    store.execute(sparql, function (err,results) {
-       if (is_null_or_blank(err) && results.length < 1) {
-           console.log("Loading uri: "+uri);
-           store.load('remote',uri, function (err2,result) {
-               callback(err2,result);
-           });
-       } else {
-           callback(err,0);
-       }
-    });
-}
+
 function _load_prereqs (store,callback) {
     var prereqlist = ["http://www.w3.org/1999/02/22-rdf-syntax-ns#",
         "http://www.w3.org/2000/01/rdf-schema#",
@@ -181,8 +169,8 @@ function _apply_owl_unionof (store,subject,callback) {
         "PREFIX  owl:<http://www.w3.org/2002/07/owl#> " +
         "SELECT ?li WHERE { "+subject+" owl:unionOf ?li } ";
     store.execute(sparql, function (err,results) {
-        console.log("unionOf results:");
-        console.debug(results);
+        //console.log("unionOf results:");
+        //console.debug(results);
         if (!is_null_or_blank(err)) { callback(err); return; }
         require(["rdflist"],function(rdflist){
             async.eachSeries(results, function(item,callback2){
@@ -224,8 +212,8 @@ function _apply_owl_intersectionof (store,subject,callback) {
         "PREFIX  owl:<http://www.w3.org/2002/07/owl#> " +
         "SELECT ?li WHERE { "+subject+" owl:intersectionOf ?li } ";
     store.execute(sparql, function (err,results) {
-        console.log("intersection_of results:");
-        console.debug(results);
+        //console.log("intersection_of results:");
+        //console.debug(results);
         if (!is_null_or_blank(err)) { callback(err); return; }
         require(["rdflist"],function(rdflist){
             async.eachSeries(results, function(item,callback2){
@@ -389,8 +377,8 @@ function apply_entailment (store, subject, options, done_callback) {
             callback(null, results)
         }
     },function (results,callback) {
-        console.info("all entailment items for "+subject);
-        console.debug(results);
+        ///console.info("all entailment items for "+subject);
+        //console.debug(results);
         async.eachSeries(results,function (item,callback2) {
             //Skip it if there was no object
             if (is_null_or_blank(item) || is_null_or_blank(item.c)){

@@ -16,6 +16,47 @@ function node_to_sparql(node) {
     }
     return s;
 }
+function load_remote_if_not_present(store,uri,named,callback) {
+    if (arguments.length == 3) {
+        callback = arguments[2];
+        named = null;
+    }
+
+    var sparql = "" +
+        "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+        "SELECT ?t WHERE { <"+uri+"> rdf:type ?t }";
+
+    var _load_remote_if_not_present = function(err,results) {
+        if (is_null_or_blank(err) && results.length < 1) {
+            var hashindex = uri.indexOf("#");
+            if (hashindex != -1) {
+                uri = uri.substr(0,hashindex);
+                uri = uri.replace('#','');
+                load_remote_if_not_present(store, uri, named, callback);
+            } else {
+                console.log("Loading uri: " + uri);
+                if (!is_null_or_blank(named)) {
+                    store.load('remote', uri, named, function (err2, result) {
+                        callback(err2, result);
+                    });
+                } else {
+                    store.load('remote', uri, function (err2, result) {
+                        callback(err2, result);
+                    });
+                }
+            }
+        } else {
+            callback(err, 0);
+        }
+    };
+    if (!is_null_or_blank(named)) {
+        store.execute(sparql, false, named, _load_remote_if_not_present);
+    } else {
+        store.execute(sparql, _load_remote_if_not_present);
+    }
+}
+
+
 
 function load_ontology(ontology, store, recursion, callback)
 {
@@ -89,5 +130,6 @@ define(['async'],function (fasync) {
     rdfutil.prototype.is_null_or_blank = is_null_or_blank;
     rdfutil.prototype.load_ontology = load_ontology;
     rdfutil.prototype.node_to_sparql = node_to_sparql;
+    rdfutil.prototype.load_remote_if_not_present = load_remote_if_not_present;
     return new rdfutil;
 });
