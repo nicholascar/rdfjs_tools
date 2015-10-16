@@ -1,8 +1,17 @@
 // Simple JavaScript Templating
 // John Resig - http://ejohn.org/ - MIT Licensed
 var cache = {};
-
+var isset = function( item ) {
+    return (!(typeof (item) == "undefined" || item === null));
+};
+var maybe = function( item ) {
+    if (isset(item)) { return ""+item;}
+    return "";
+};
+var after;
 var tmpl = function (str, data, fn_only){
+
+    after = null;
     // Figure out if we're getting a template, or if we need to
     // load the template - and be sure to cache the result.
     var fn = !/\W/.test(str) ?
@@ -31,7 +40,20 @@ var tmpl = function (str, data, fn_only){
             + "');}return p.join('');");
 
     // Provide some basic currying to the user
-    return fn_only? fn : ( data ? fn( data ) : fn({}) );
+    if (fn_only) { return fn; }
+    if (data) {
+        data['after'] = after;
+    } else {
+        data = {};
+    }
+    var result = fn(data);
+    if (isset(data['after'])) {
+        after = data['after'];
+        if (typeof (after) == "function") {
+            after();
+        }
+    }
+    return result;
 };
 define([], function () {
     var templ = function () {};
