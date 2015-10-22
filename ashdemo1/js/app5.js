@@ -36,7 +36,9 @@ define(
     function(_async,rdfutil,rdfstore,rdfproxy,rdfvalidate){
         async = _async;
         apply_rdfutil(rdfutil);
-        var loc = window.location.protocol + '//' + window.location.host + '/';
+        var path = window.location.pathname;
+        path = path.substring(0, path.lastIndexOf("/") + 1);
+        var loc = window.location.protocol + '//' + window.location.host + '/' + path;
         rdfproxy.set_proxy(loc + 'proxy.php');
         rdfstore.create(function (e, store) {
             if (typeof e != 'undefined' && e !== null) {
