@@ -374,7 +374,7 @@ function apply_entailment (store, subject, options, done_callback) {
                 }
             });
         } else {
-            callback(null, results)
+            callback(null, results);
         }
     },function (results,callback) {
         ///console.info("all entailment items for "+subject);
@@ -425,7 +425,7 @@ function apply_entailment (store, subject, options, done_callback) {
         });
     }],function(err,results){
         if (!is_null_or_blank(done_callback)) {
-            async.setImmediate(function () { done_callback(err,results) });
+            async.setImmediate(function () { done_callback(err,results); });
         }
     });
 }
@@ -455,7 +455,7 @@ define(['rdfstore','async','rdfutil'], function (rdfstore,_async,rdfutil) {
                 return true;
             }
         }
-        return false
+        return false;
     };
     rdfrules.prototype._has_applied_owl_to = function (item) {
         for (var x= 0, l=this._applied_owl_to.length; x<l; x++) {
@@ -463,7 +463,7 @@ define(['rdfstore','async','rdfutil'], function (rdfstore,_async,rdfutil) {
                 return true;
             }
         }
-        return false
+        return false;
     };
 
     rdfrules.prototype._load_prereqs = _load_prereqs;

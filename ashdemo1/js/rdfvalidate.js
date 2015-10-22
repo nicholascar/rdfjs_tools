@@ -29,6 +29,13 @@ var validate_xmlschema_type_literal = function( xmlschema_type, value ) {
                 retval = "Must be a property formatted URI.";
             }
             break;
+        case "string":
+            if (typeof(value) == "string") {
+              retval = true;
+            }  else {
+              retval = "The input text is not a string, for some reason.";
+            }
+            break;
         case "boolean":
             var isbool = (value === true || value === false);
             if (!isbool && typeof (value) == "string") {
@@ -82,7 +89,7 @@ var validate_xmlschema_type_literal = function( xmlschema_type, value ) {
            break;
         default:
             console.debug("unimplemented xmlschema_type.");
-            retval = "unimplemented xmlschema_type.";
+            retval = "unimplemented xmlschema_type "+xmlschema_type;
             break;
     }
     return retval;
@@ -91,7 +98,7 @@ var validate_xmlschema_type_literal = function( xmlschema_type, value ) {
 var _validate_async_rdf = function (value, element, params, options) {
     var previous, validator;
     options = options || {};
-    var validator_name = is_null_or_blank(options['name'])?"async_rdf":options['name'];
+    var validator_name = is_null_or_blank(options['name'])?"async_rdf":options.name;
     var __validate_internal_callback = function( err, results ) {
         var valid, errors, message, submitted;
         if (!is_null_or_blank(err)) {
@@ -115,7 +122,7 @@ var _validate_async_rdf = function (value, element, params, options) {
         }
 
         validator.settings.messages[ element.name ][validator_name] = previous.originalMessage;
-        var errors = jQuery.data(validator.currentForm, "async_errors-"+element.name);
+        errors = jQuery.data(validator.currentForm, "async_errors-"+element.name);
         var invalid_count = jQuery.data(validator.currentForm, "async_invalid_count-"+element.name);
         errors = errors || {};
         invalid_count = parseInt(invalid_count) || 0;
@@ -164,10 +171,11 @@ var _validate_async_rdf = function (value, element, params, options) {
         if ( previous.old === paramDataString ) {
             return previous.valid;
         }
-        var check = is_null_or_blank(options['check'])?__unimplemented_check:options['check'];
+        var check = is_null_or_blank(options['check'])?__unimplemented_check:options.check;
         var is_uri = false;
-        if (string_starts_with("http:",value) || string_starts_with("<http",value)
-            || string_starts_with("https:",value)) {
+        if (string_starts_with("http:",value) ||
+          string_starts_with("<http",value) ||
+          string_starts_with("https:",value)) {
             is_uri = true;
         }
         validator.startRequest( element, validator_name );
@@ -310,7 +318,7 @@ Very similar to _validate_async_rdf, again based on the remote validator.
 var _validate_postprocess_rdf = function(value, element, params, options) {
   var previous, validator;
   options = options || {};
-  var validator_name = is_null_or_blank(options['name'])?"postprocess_rdf":options['name'];
+  var validator_name = is_null_or_blank(options['name'])?"postprocess_rdf":options.name;
 
   var __validate_internal_callback = function(err,result) {
     var valid, errors, message, submitted;
@@ -335,7 +343,7 @@ var _validate_postprocess_rdf = function(value, element, params, options) {
     }
 
     validator.settings.messages[ element.name ][validator_name] = previous.originalMessage;
-    var errors = jQuery.data(validator.currentForm, "async_errors-"+element.name);
+    errors = jQuery.data(validator.currentForm, "async_errors-"+element.name);
     var invalid_count = jQuery.data(validator.currentForm, "async_invalid_count-"+element.name);
     errors = errors || {};
     invalid_count = parseInt(invalid_count) || 0;
@@ -365,7 +373,7 @@ var _validate_postprocess_rdf = function(value, element, params, options) {
       previous.valid = valid;
     }
     validator.stopRequest(element, validator_name, valid );
-  }
+  };
 
   var __unimplemented_check = function(form,cb) {
       async.setImmediate(function () { cb("unimplemented"); });
@@ -386,7 +394,7 @@ var _validate_postprocess_rdf = function(value, element, params, options) {
       if ( previous.old === paramDataString ) {
           return previous.valid;
       }
-      var check = is_null_or_blank(options['check'])?__unimplemented_check:options['check'];
+      var check = is_null_or_blank(options['check'])?__unimplemented_check:options.check;
       validator.startRequest( element, validator_name );
       check(validator.currentForm, __validate_internal_callback);
       return "checking_postprocess";
@@ -426,7 +434,7 @@ var _validate_owl_cardinality = function (value, element, params) {
       $.data(form,"owl_cardinality-"+element.name,''+instance_count);
     };
     var options = { name: "owl_cardinality", check: check };
-    return _validate_postprocess_rdf.call(this,value, element, params, options)
+    return _validate_postprocess_rdf.call(this,value, element, params, options);
 };
 
 var override_validator_functions = function () {
@@ -490,10 +498,10 @@ var override_validator_functions = function () {
         toremove.push(name);
       }
     }
-    for (var x=0,l=toremove.length; x<l; x++) {
-      $element.removeData(toremove[x]);
+    for (var y=0,m=toremove.length; y<m; y++) {
+      $element.removeData(toremove[y]);
     }
-  }
+  };
 
   var reset_postprocess_data = function ($form) {
     remove_data_starting_with($form,'owl_cardinality');
@@ -512,8 +520,8 @@ var override_validator_functions = function () {
       $form.triggerHandler('postprocess',[ this ]);
       $form.removeData('check_postprocess');
 			return this.valid();
-	}
-}
+	};
+};
 
 var init_custom_functions = function (_store) {
     store = _store;

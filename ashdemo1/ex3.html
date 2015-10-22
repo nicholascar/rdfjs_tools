@@ -27,10 +27,20 @@
         <p>This is an automatically generated form.</p>
         <p>Please fill in the fields below to create a new instance of <%=title || "this class" %></p>
     </script>
+    <script type="text/html" id="tmpl_add_property">
+        <% console.debug(obj); %>
+        <p>Add a new property:</p>
+
+    </script>
     <script type="text/html" id="tmpl_form_html">
         <form class="form-horizontal" id="rdf_form-<%=form_id %>" action="." method="post">
-            <fieldset><legend>Legend here</legend>
+            <fieldset>
+                <% if (isset(obj["legend"])) { %>
+                  <legend><%=maybe(obj["legend"]) %></legend>
+                <% } %>
+                <%=maybe(obj["preform"]) %>
                 <%=formrows %>
+                <%=maybe(obj["postform"]) %>
                 <div class="form-group">
                   <input type="submit" id="rdf_form_submit-<%=form_id %>" class="rdf_form_submit btn btn-lg btn-primary" value="Validate and Submit"></input>
                 </div>
@@ -51,7 +61,13 @@
     <script type="text/html" id="tmpl_example_field">
         <div class="form-group" data-form-group-id="<%=fieldid %>">
             <div class="col-lg-4">
+              <% console.debug(obj); %>
+                <% if (isset(obj["fielddesc"])) { %>
+                <label class="control-label" style="display:block;"><%=fieldlabel %></label><br/>
+                <label class="control-label" style="display:block;font-size:smaller;"><%=fielddesc %></label>
+                <% } else { %>
                 <label class="control-label"><%=fieldlabel %></label>
+                <% } %>
             </div>
             <div class="col-lg-8">
                 <div class="input-group">
@@ -78,7 +94,7 @@
                       </div>
                     <% } %>
                     <% if (isset(obj["rdfs_range"])) { %>
-                    <div class="row req-row">Range: <%=rdfs_range %></div>
+                    <div class="row req-row">Range&nbsp;->&nbsp;<%=rdfs_range %></div>
                     <% } %>
                     </div>
                 </div>

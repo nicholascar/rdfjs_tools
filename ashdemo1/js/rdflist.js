@@ -54,7 +54,7 @@ function collect (store,listnode, callback) {
                                 if (err) {
                                     callback3(err);
                                 }
-                                else if (results == null || results.length < 1) {
+                                else if (results === null || results.length < 1) {
                                     f = null;
                                     r = null;
                                     callback3();
@@ -114,4 +114,3 @@ define(['async','rdfutil'], function (_async,rdfutil) {
     rdflist.prototype.collect = collect;
     return new rdflist;
 });
-
