@@ -1,5 +1,5 @@
 <?php
-    const cache_map = array(
+    define('cache_map', serialize ( array(
         "http://www.w3.org/1999/02/22-rdf-syntax-ns" => "rdf.ttl",
         "http://www.w3.org/2000/01/rdf-schema" => "rdfs.ttl",
         "http://www.w3.org/2002/07/owl" => "owl.ttl",
@@ -16,11 +16,11 @@
         "http://xmlns.com/foaf/0.1/" => "foaf.ttl",
         "http://www.w3.org/2004/02/skos/core" => "skos.ttl",
         "http://scikey.org/def/vocab" => "vocab.ttl",
-    );
-    const sample_map = array(
+    ) ) );
+    define('sample_map',serialize( array(
      "example1" => "example1.ttl",
      "sampleitems" => "sampleitems.ttl",
-    );
+    ) ) );
 
 
     function startswith($haystack, $needle) {
@@ -37,7 +37,8 @@
         exit();
     }
     function check_cache($uri){
-        foreach (cache_map as $mapkey => $mapvalue) {
+        $cache_map = unserialize(cache_map);
+        foreach ($cache_map as $mapkey => $mapvalue) {
             if (startswith($uri, $mapkey)) {
                 return_cached($mapvalue);
             }
@@ -50,7 +51,8 @@
         } else {
             return false;
         }
-        foreach (sample_map as $mapkey => $mapvalue) {
+        $sample_map = unserialize(sample_map);
+        foreach ($sample_map as $mapkey => $mapvalue) {
             if (startswith($filename, $mapkey)) {
                 return_cached($mapvalue, "samples");
             }
