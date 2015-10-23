@@ -39,10 +39,10 @@ var _create_form_field_row_from_property = function (store, property, requiremen
                   var escapedlabel = $("<span>").text(label).html();
                   var escapeddesc = desc?$("<span>").text(desc).html():null;
                   var fieldid = _new_uuid_rfc4122v4();
-                  if (is_null_or_blank(escapedlabel)) {
+                  if (is_null_or_blank(label)) {
                     escapedlabel = escapedproperty;
-                  } else if (is_null_or_blank(escapeddesc)) {
-                    esacpeddesc = escapedproperty;
+                  } else if (is_null_or_blank(desc)) {
+                    escapeddesc = escapedproperty;
                   }
 
                   var params = {
@@ -76,28 +76,62 @@ var _create_form_rows_from_requirements = function (store, requirements, callbac
     });
 };
 
-var _create_add_property_unrestricted = function (store, callback)
-{
+var _create_add_property_unrestricted = function (store, callback) {
+  var properties = [];
   require(['tmpl'], function(tmpl){
     var t = tmpl.tmpl;
-    var sparql = "SELECT DISTINCT ?p WHERE { ?x ?p ?y }";
-    store.execute(sparql, function(err,results){
-      if (!is_null_or_blank(err)) {
-        callback(err,"");
-      } else {
-        var properties = [];
-        for (var x=0,l=results.length;x<l;x++) {
-          var thisp = results[x].p;
-          if (!is_null_or_blank(thisp['token']) && thisp.token == "uri")
-          {
-            properties.push(thisp);
+    async.series([function (scb) {
+      var sparql = "SELECT DISTINCT ?p WHERE { ?x ?p ?y }";
+      store.execute(sparql, function(err,results){
+        if (!is_null_or_blank(err)) {
+          scb(err);
+        } else {
+          for (var x=0,l=results.length;x<l;x++) {
+            var thisp = results[x].p;
+            if (!is_null_or_blank(thisp['token']) && thisp.token == "uri") {
+              properties.push(thisp);
+            }
           }
+          scb(null);
         }
-        var html = t("tmpl_add_property",{properties:properties});
-        callback(null, html);
-      }
+      });
+    },function (scb) {
+      var sparql = "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> " +
+      "PREFIX  owl:<http://www.w3.org/2002/07/owl#> " +
+      "SELECT DISTINCT ?p WHERE { ?x owl:onProperty ?p }";
+      store.execute(sparql, function(err,results){
+        if (!is_null_or_blank(err)) {
+          scb(err);
+        } else {
+          for (var x=0,l=results.length;x<l;x++) {
+            var thisp = results[x].p;
+            if (!is_null_or_blank(thisp['token']) && thisp.token == "uri") {
+              if (!util.array_of_nodes_contains(properties, thisp)) {
+                properties.push(thisp);
+              }
+            }
+          }
+          scb(null);
+        }
+      });
+    }],function(err,results){
+      properties.sort(function(a,b){
+        return a.value.localeCompare(b.value);
+      });
+      var html = t("tmpl_add_property",{properties:properties});
+      callback(null, html);
     });
   });
+};
+
+var _array_of_nodes_contains = function (a, node) {
+  for (var x=0,l=a.length;x<l;x++) {
+    var thisnode = a[x];
+    if (thisnode.value && node.value && (node.value.localeCompare(thisnode.value) === 0)) {
+      return true;
+    }
+    return false;
+  }
 };
 
 var create_form_for_class = function (store, klass, callback) {

@@ -59,32 +59,39 @@
                   ] .
 
 :parent
+  rdfs:label "Parent"@en ;
   rdfs:domain :Student ;
   rdfs:range :Person .
 
 :studentName
+  rdfs:label "Student Name"@en ;
   rdfs:subPropertyOf dc:title ;
   rdfs:domain :Student ;
   rdfs:range rdfs:Literal .
 
 :schoolName
+  rdfs:label "School Name"@en ;
   rdfs:subPropertyOf dc:title ;
   rdfs:domain :School ;
   rdfs:range rdfs:Literal .
 
 :attendants
+  rdfs:label "Attendants"@en ;
   rdfs:domain :School ;
   rdfs:range xsd:nonNegativeInteger .
 
 :attends
+  rdfs:label "Attends"@en ;
   rdfs:domain :Student ;
   rdfs:range :School .
 
 :reliesOn
+  rdfs:label "Relies On"@en ;
   rdfs:domain :School ;
   rdfs:range :School .
 
 :usedBy
+  rdfs:label "Used By"@en ;
   rdfs:domain :School ;
   rdfs:range :School .
 

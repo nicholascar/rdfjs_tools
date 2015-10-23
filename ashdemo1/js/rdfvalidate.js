@@ -112,8 +112,8 @@ var _validate_async_rdf = function (value, element, params, options) {
             } else {
                 message = "Unknown RDF Validation Error.";
             }
-        } else if (results === true) {
-            valid = true;
+        } else if (results === true || results === false) {
+            valid = results;
         } else if (is_null_or_blank(results) || results.length < 1) {
             valid = false;
         } else {
@@ -333,9 +333,9 @@ var _validate_postprocess_rdf = function(value, element, params, options) {
         } else {
             message = "Unknown RDF Validation Error.";
         }
-    } else if (result === true) {
-        valid = true;
-    } else if (is_null_or_blank(result) || results.length < 1) {
+    } else if (result === true || result === false) {
+        valid = result;
+    } else if (is_null_or_blank(result) || result.length < 1) {
         valid = false;
     } else {
         // Assume if we get here it is valid. maybe not true.

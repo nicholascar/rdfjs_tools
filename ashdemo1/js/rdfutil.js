@@ -201,6 +201,15 @@ var get_full_subject_info = function (store,subject,lang,callback) {
         callback(err,{uri: uri, title: title, description: description, label: label});
     } );
 };
+var array_of_nodes_contains = function (a, node) {
+  for (var x=0,l=a.length;x<l;x++) {
+    var thisnode = a[x];
+    if (thisnode.value && node.value && (node.value.localeCompare(thisnode.value) === 0)) {
+      return true;
+    }
+  }
+  return false;
+};
 
 define(['async'],function (_async) {
     async = _async;
@@ -211,5 +220,6 @@ define(['async'],function (_async) {
     rdfutil.prototype.node_to_sparql = node_to_sparql;
     rdfutil.prototype.load_remote_if_not_present = load_remote_if_not_present;
     rdfutil.prototype.get_full_subject_info = get_full_subject_info;
+    rdfutil.prototype.array_of_nodes_contains = array_of_nodes_contains;
     return new rdfutil();
 });

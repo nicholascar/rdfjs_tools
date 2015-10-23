@@ -47,7 +47,7 @@
               <legend>
               <% if (isset(obj["legend"])) { %>
                 <%=maybe(obj["legend"]) %>
-              <% } else { print("&nbsp;"); } %>
+              <% } else { print("Properties"); } %>
               </legend>
                 <%=maybe(obj["preform"]) %>
                 <%=formrows %>
@@ -74,7 +74,7 @@
             <div class="col-lg-4">
               <% console.debug(obj); %>
                 <% if (isset(obj["fielddesc"])) { %>
-                <label class="control-label" style="display:block;"><%=fieldlabel %></label><br/>
+                <label class="control-label" style="display:block;"><%=fieldlabel %></label>
                 <label class="control-label" style="display:block;font-size:smaller;"><%=fielddesc %></label>
                 <% } else { %>
                 <label class="control-label"><%=fieldlabel %></label>
