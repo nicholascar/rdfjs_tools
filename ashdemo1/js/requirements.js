@@ -135,7 +135,7 @@ var _extract_known_requirement_from_requirement_nodes = function (info_nodes) {
  */
 var allocate_requirements = function (store,requirements,callback) {
     var property_requirement_map = {};
-    var sparql = "SELECT * WHERE { %s ?p ?o } ";
+    var sparql = "SELECT DISTINCT * WHERE { %s ?p ?o } ";
     var __allocate_requirement = function(reqtype, requirement_info_nodes){
         var onproperties = _extract_object_by_predicate_from_list(
             requirement_info_nodes, "http://www.w3.org/2002/07/owl#onProperty");
@@ -198,7 +198,7 @@ var _collect_direct_restrictions = function(store,subject,requirements,callback)
         "PREFIX  rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
         "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> " +
         "PREFIX  owl:<http://www.w3.org/2002/07/owl#> " +
-        "SELECT * { "+subject+" rdfs:subClassOf ?o . ?o rdf:type owl:Restriction } ";
+        "SELECT DISTINCT * { "+subject+" rdfs:subClassOf ?o . ?o rdf:type owl:Restriction } ";
     store.execute(sparql, function (err, results) {
         console.log("Found restrictions:");
         console.debug(results);
@@ -220,7 +220,7 @@ var _collect_union_restrictions = function(store,subject,requirements,callback) 
         "PREFIX  rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
         "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> " +
         "PREFIX  owl:<http://www.w3.org/2002/07/owl#> " +
-        "SELECT ?li WHERE { "+subject+" owl:unionOf ?li . " +
+        "SELECT DISTINCT ?li WHERE { "+subject+" owl:unionOf ?li . " +
                             //This line works now, but is probably not needed.
                             //"?li rdf:type rdf:List  . " +
                             "?li rdf:first ?f  . " +
@@ -258,7 +258,7 @@ var _collect_intersection_restrictions = function(store,subject,requirements,cal
         "PREFIX  rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
         "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> " +
         "PREFIX  owl:<http://www.w3.org/2002/07/owl#> " +
-        "SELECT ?li WHERE { "+subject+" owl:intersectionOf ?li . " +
+        "SELECT DISTINCT ?li WHERE { "+subject+" owl:intersectionOf ?li . " +
                 //This line works now, but is probably not needed.
                         //"?li rdf:type rdf:List  . " +
                     "?li rdf:first ?f  . " +

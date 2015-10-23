@@ -88,12 +88,12 @@ var _create_add_property_unrestricted = function (store, callback)
         var properties = [];
         for (var x=0,l=results.length;x<l;x++) {
           var thisp = results[x].p;
-          if (!is_null_or_blank(thisp['token']) && thisp.token == "url")
+          if (!is_null_or_blank(thisp['token']) && thisp.token == "uri")
           {
             properties.push(thisp);
           }
         }
-        var html = t("tmpl_add_property",properties);
+        var html = t("tmpl_add_property",{properties:properties});
         callback(null, html);
       }
     });

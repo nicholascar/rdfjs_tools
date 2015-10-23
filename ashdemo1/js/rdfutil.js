@@ -139,7 +139,7 @@ var get_full_subject_info = function (store,subject,lang,callback) {
             "PREFIX dc10:<http://purl.org/dc/elements/1.0/> "+
             "PREFIX dc11:<http://purl.org/dc/elements/1.1/> "+
             "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> " +
-            "SELECT ?title ?desc ?label " +
+            "SELECT DISTINCT ?title ?desc ?label " +
             "WHERE { %s a ?z . " +
             "OPTIONAL { { %s dc10:title ?title } "+
             " UNION { %s dc11:title ?title } } . "+

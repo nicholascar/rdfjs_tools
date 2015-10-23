@@ -28,16 +28,27 @@
         <p>Please fill in the fields below to create a new instance of <%=title || "this class" %></p>
     </script>
     <script type="text/html" id="tmpl_add_property">
-        <% console.debug(obj); %>
-        <p>Add a new property:</p>
-
+        <div class="form-group"><legend>Add a new property:</legend>
+        <select class="form-control" name="add_new_property">
+        <% if (isset(obj["properties"]) && properties.length > 0) {
+          for (var x=0,l=properties.length; x<l; x++) {
+          var thisprop = properties[x];
+         %>
+          <option value="<%=thisprop.value %>"><%=thisprop.value%></option>
+        <% } } else { %>
+          <option value="-1">No available properties</option>
+        <% } %>
+        </select>
+      </div>
     </script>
     <script type="text/html" id="tmpl_form_html">
         <form class="form-horizontal" id="rdf_form-<%=form_id %>" action="." method="post">
             <fieldset>
-                <% if (isset(obj["legend"])) { %>
-                  <legend><%=maybe(obj["legend"]) %></legend>
-                <% } %>
+              <legend>
+              <% if (isset(obj["legend"])) { %>
+                <%=maybe(obj["legend"]) %>
+              <% } else { print("&nbsp;"); } %>
+              </legend>
                 <%=maybe(obj["preform"]) %>
                 <%=formrows %>
                 <%=maybe(obj["postform"]) %>

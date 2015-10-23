@@ -27,10 +27,30 @@
         <p>This is an automatically generated form.</p>
         <p>Please fill in the fields below to create a new instance of <%=title || "this class" %></p>
     </script>
+    <script type="text/html" id="tmpl_add_property">
+        <div class="form-group"><legend>Add a new property:</legend>
+        <select class="form-control" name="add_new_property">
+        <% if (isset(obj["properties"]) && properties.length > 0) {
+          for (var x=0,l=properties.length; x<l; x++) {
+          var thisprop = properties[x];
+         %>
+          <option value="<%=thisprop.value %>"><%=thisprop.value%></option>
+        <% } } else { %>
+          <option value="-1">No available properties</option>
+        <% } %>
+      </select></div>
+    </script>
     <script type="text/html" id="tmpl_form_html">
         <form class="form-horizontal" id="rdf_form-<%=form_id %>" action="." method="post">
-            <fieldset><legend>Legend here</legend>
+            <fieldset>
+                <legend>
+                <% if (isset(obj["legend"])) { %>
+                  <%=maybe(obj["legend"]) %>
+                <% } else { print("&nbsp;"); } %>
+                </legend>
+                <%=maybe(obj["preform"]) %>
                 <%=formrows %>
+                <%=maybe(obj["postform"]) %>
                 <div class="form-group">
                   <input type="submit" id="rdf_form_submit-<%=form_id %>" class="rdf_form_submit btn btn-lg btn-primary" value="Validate and Submit"></input>
                 </div>
@@ -51,7 +71,13 @@
     <script type="text/html" id="tmpl_example_field">
         <div class="form-group" data-form-group-id="<%=fieldid %>">
             <div class="col-lg-4">
+              <% console.debug(obj); %>
+                <% if (isset(obj["fielddesc"])) { %>
+                <label class="control-label" style="display:block;"><%=fieldlabel %></label><br/>
+                <label class="control-label" style="display:block;font-size:smaller;"><%=fielddesc %></label>
+                <% } else { %>
                 <label class="control-label"><%=fieldlabel %></label>
+                <% } %>
             </div>
             <div class="col-lg-8">
                 <div class="input-group">
@@ -78,7 +104,7 @@
                       </div>
                     <% } %>
                     <% if (isset(obj["rdfs_range"])) { %>
-                    <div class="row req-row">Range: <%=rdfs_range %></div>
+                    <div class="row req-row">Range&nbsp;->&nbsp;<%=rdfs_range %></div>
                     <% } %>
                     </div>
                 </div>

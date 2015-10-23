@@ -193,7 +193,7 @@ var _validate_rdfs_range = function (value, element, params) {
         var sparql = "" +
             "PREFIX  rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
             "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> " +
-            "SELECT * WHERE { "+subject+" rdf:type "+range+" }";
+            "SELECT DISTINCT * WHERE { "+subject+" rdf:type "+range+" }";
         store.execute(sparql, callback);
     };
 
@@ -255,7 +255,7 @@ var _validate_owl_allvaluesfrom = function (value, element, params) {
         var sparql = "" +
             "PREFIX  rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
             "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> " +
-            "SELECT * WHERE { "+subject+" rdf:type "+valuesfrom+" }";
+            "SELECT DISTINCT * WHERE { "+subject+" rdf:type "+valuesfrom+" }";
         store.execute(sparql, callback);
     };
     var check = function(is_uri, callback) {
