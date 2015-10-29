@@ -1,3 +1,18 @@
+/** **********************
+ *  Author: Ashley Sommer
+ *  Griffith ID: (s2172861)
+ *  CSIRO ident: som05d
+ *  This file was created for CSIRO, as part of the Griffith Industry affiliates program.
+ *  August - November 2015.
+ ** **********************/
+
+/** **********************
+ *  rdfproxy.js
+ *  This file is a module for the rdfjs_tools library.
+ *  This overrides the RDFLoader Load function from RDFStore.
+ *  It allows RDFStore to load files from a proxy file, rather than directly.
+ ** **********************/
+
 //* This function takes a normal URL and encodes it for placing within a Query string.
 function rdfproxy_query_encode(str) {
   str = (str + '').toString();
@@ -13,6 +28,10 @@ function rdfproxy_query_encode(str) {
     .replace(/%20/g, '+');
 }
 
+/**
+ * require.js module definition.
+ * Creates a loadable require.js module named rdfproxy
+ */
 define(['rdfstore'], function(rdfstore)
     {
         var rdfproxyClass = function() {

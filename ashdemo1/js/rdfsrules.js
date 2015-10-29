@@ -1,6 +1,27 @@
+/** **********************
+ *  Author: Ashley Sommer
+ *  Griffith ID: (s2172861)
+ *  CSIRO ident: som05d
+ *  This file was created for CSIRO, as part of the Griffith Industry affiliates program.
+ *  August - November 2015.
+ ** **********************/
+
+/** **********************
+ *  rdfsrules.js
+ *  This file is a module for the rdfjs_tools library.
+ *  This module does entailment and inference on loaded RDF classes
+ *  based on established, known RDFS and OWLv1 rules.
+ ** **********************/
+
 var util, async;
 var is_null_or_blank;
 var load_remote_if_not_present;
+
+/**
+ * Applies the rdfutil module globally to this file.
+ * For utility purposes, allows util functions to be called directly.
+ * @param rdfutil The rdfutil module, to use to create the globals.
+ */
 var apply_rdfutil = function(rdfutil)
 {
     util = rdfutil;
@@ -8,8 +29,14 @@ var apply_rdfutil = function(rdfutil)
     load_remote_if_not_present = util.load_remote_if_not_present;
 };
 
-
-function _load_prereqs (store,callback) {
+/**
+ * Loads the prerequisite RDF files if they are not already loaded.
+ * At this stage, it is rdf, rdfs, and owl that are needed for entailment
+ * @param store
+ * @param callback
+ * @private
+ */
+var _load_prereqs = function (store,callback) {
     var prereqlist = ["http://www.w3.org/1999/02/22-rdf-syntax-ns#",
         "http://www.w3.org/2000/01/rdf-schema#",
         "http://www.w3.org/2002/07/owl#"];
@@ -21,9 +48,18 @@ function _load_prereqs (store,callback) {
     }, function (err) {
         callback(err);
     });
-}
+};
 
-function _apply_rdf_types (store,subject,callback) {
+/**
+ * An entailment rule.
+ * If a subject is an instance of a type, and that type is a subclass of a parent type,
+ * then the subject is also an instance of the parent type.
+ * @param store
+ * @param subject
+ * @param callback
+ * @private
+ */
+var _apply_rdfs_subclassof = function (store,subject,callback) {
     var sparql = "" +
         "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
         "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> " +
@@ -35,21 +71,18 @@ function _apply_rdf_types (store,subject,callback) {
         if (!is_null_or_blank(err)) { callback(err); }
         else { callback(null,results); }
     });
-}
-function _apply_rdfs_subclassof (store,subject,callback) {
-    var sparql = "" +
-        "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-        "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> " +
-        "INSERT { "+subject+" rdf:type ?parent } " +       //child typeof class human
-        "WHERE { "+subject+" rdfs:subClassOf ?parent }";// + //child subclassof class human
+};
 
-    store.execute(sparql, function (err,results) {
-        if (!is_null_or_blank(err)) { callback(err); }
-        else { callback(null,results); }
-    });
-}
-
-function _apply_rdfs_subpropertyof (store,subject,callback) {
+/**
+ * An entailment rule.
+ * If a subject has a property, and that property is a subproperty of a parent property
+ * then the subject inherently defines that parent property on itself.
+ * @param store
+ * @param subject
+ * @param callback
+ * @private
+ */
+var _apply_rdfs_subpropertyof = function (store,subject,callback) {
     var sparql = "" +
         "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
         "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> " +
@@ -59,32 +92,46 @@ function _apply_rdfs_subpropertyof (store,subject,callback) {
     //        " <"+subject+"> ?parent ?existing . " +  // tim mother ?exiting
     //"FILTER (?existing != ?o) }";                    // ?existing != gwen
     store.execute(sparql, function (err,results) {
-        //console.log("subproperty results:");
-        //console.debug(results);
         if (!is_null_or_blank(err)) { callback(err); }
         else { callback(null,results); }
     });
-}
+};
 
-function _apply_rdfs_range (store,subject,callback) {
+/**
+ * An entailment rule.
+ * If the subject has a property which is an object (C1) and that property defines a range class
+ * then the object (C1) inherently becomes an instance of the range class.
+ * Note* This breaks range compliance testing of existing defined objects, as they are inferred to be correct here,
+ * @param store
+ * @param subject
+ * @param callback
+ * @private
+ */
+var _apply_rdfs_range = function (store,subject,callback) {
     var sparql = "" +
         "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
         "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> " +
-            //"SELECT * " +
         "INSERT { ?o rdf:type ?rangeclass } " +      // gwen typeof adultperson
         "WHERE { "+subject+" ?p ?o . " +               // tim mother gwen
         " ?p rdfs:range ?rangeclass } ";// +    //mother range adultpersion
     //" ?o rdfs:Class ?existing  }" //+      // gwen Class ?exiting
     //"FILTER (?existing != ?rangeclass) }";        // ?existing != adultperson
     store.execute(sparql, function (err,results) {
-        //console.log("range results:");
-        //console.debug(results);
         if (!is_null_or_blank(err)) { callback(err); }
         else { callback(null,results); }
     });
-}
+};
 
-function _apply_rdfs_domain (store,subject,callback) {
+/**
+ * An entailment rule.
+ * If a subject has a property and that property defines a domain class,
+ * then the subject inherently becomes an instance of that domain class.
+ * @param store
+ * @param subject
+ * @param callback
+ * @private
+ */
+var _apply_rdfs_domain = function (store,subject,callback) {
     var sparql = "" +
         "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
         "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> " +
@@ -94,13 +141,19 @@ function _apply_rdfs_domain (store,subject,callback) {
     //" <"+subject+"> rdfs:Class ?existing . " +    // tim Class ?exiting
     //"FILTER (?existing != ?domainc) }";               // ?existing != child
     store.execute(sparql, function (err,results) {
-        //console.log("domain results:");
-        //console.debug(results);
         if (!is_null_or_blank(err)) { callback(err); }
         else { callback(null,results); }
     });
-}
-function _apply_rdfs_rules (store, subject, callback) {
+};
+
+/**
+ * Wrapper function which applies all of the RDFS Rules asynchronously, in series.
+ * @param store
+ * @param subject
+ * @param callback
+ * @private
+ */
+var _apply_rdfs_rules = function (store, subject, callback) {
     var that = this;
     async.series([
         function (c) {
@@ -114,16 +167,21 @@ function _apply_rdfs_rules (store, subject, callback) {
         },
         function (c) {
             that._apply_rdfs_range.call(that,store,subject,c);
-        },
-        function (c) {
-            that._apply_rdf_types.call(that,store,subject,c);
         }
     ],function (err,results){
         if (!is_null_or_blank(err)) { callback(err); }
         else { callback(null,results); }
     });
-}
-function _apply_owl_rules (store, subject, callback) {
+};
+
+/**
+ * Wrapper function which applies all of the OWL rules asynchronously, in series.
+ * @param store
+ * @param subject
+ * @param callback
+ * @private
+ */
+var _apply_owl_rules = function (store, subject, callback) {
     var that = this;
     var has_changed = function(results) {
         for (var x= 0,l=results.length; x<l; x++)
@@ -146,9 +204,16 @@ function _apply_owl_rules (store, subject, callback) {
             that._apply_rdfs_rules(store,subject,callback);
         } else { callback(null,results); }
     });
-}
+};
 
-function _apply_owl_unionof (store,subject,callback) {
+/**
+ * OWL Rule. Work in progress.
+ * @param store
+ * @param subject
+ * @param callback
+ * @private
+ */
+var _apply_owl_unionof = function (store,subject,callback) {
     var __applied = [];
     var __has_applied = function (test) {
         for (var x= 0,l=__applied.length; x<l ;x++)
@@ -191,8 +256,16 @@ function _apply_owl_unionof (store,subject,callback) {
             });
         });
     });
-}
-function _apply_owl_intersectionof (store,subject,callback) {
+};
+
+/**
+ * OWL Rule. Work in progress.
+ * @param store
+ * @param subject
+ * @param callback
+ * @private
+ */
+var _apply_owl_intersectionof = function (store,subject,callback) {
     var __applied = [];
     var __has_applied = function(test){
         for (var x= 0,l=__applied.length; x<l ;x++)
@@ -203,7 +276,7 @@ function _apply_owl_intersectionof (store,subject,callback) {
         }
         return false;
     };
-    var __apply_intersection = function(listitems, callback2) {
+    var __apply_intersection = function (listitems, callback2) {
         callback2();
     };
     var sparql = "" +
@@ -212,11 +285,9 @@ function _apply_owl_intersectionof (store,subject,callback) {
         "PREFIX  owl:<http://www.w3.org/2002/07/owl#> " +
         "SELECT ?li WHERE { "+subject+" owl:intersectionOf ?li } ";
     store.execute(sparql, function (err,results) {
-        //console.log("intersection_of results:");
-        //console.debug(results);
         if (!is_null_or_blank(err)) { callback(err); return; }
-        require(["rdflist"],function(rdflist){
-            async.eachSeries(results, function(item,callback2){
+        require(["rdflist"],function (rdflist) {
+            async.eachSeries(results, function (item,callback2) {
                 var s = util.node_to_sparql(item.li);
                 async.setImmediate(function () {
                     rdflist.collect(store, s, function (err2, results2) {
@@ -235,7 +306,15 @@ function _apply_owl_intersectionof (store,subject,callback) {
         });
     });
 }
-function apply_entailment (store, subject, options, done_callback) {
+
+/**
+ * The main entry point to the entailment functions. Pass your class or instance in here to apply entailment.
+ * @param store
+ * @param subject
+ * @param options
+ * @param done_callback
+ */
+var apply_entailment = function (store, subject, options, done_callback) {
     var that = this;
     var recursion;
     var recursion_max;
@@ -251,7 +330,7 @@ function apply_entailment (store, subject, options, done_callback) {
         recursion_max = is_null_or_blank(options.recursion_max) ?
             default_options.recursion_max : options.recursion_max;
     }
-    var apply_rules_to = function(s, cb) {
+    var apply_rules_to = function (s, cb) {
         that._apply_rdfs_rules.call(that, store, s, function () {
             that._applied_rdfs_to.push(s);
             if (recursion >= recursion_max) {
@@ -268,7 +347,7 @@ function apply_entailment (store, subject, options, done_callback) {
         console.log("Entering apply_entailment for " + subject + " with recursion of " + recursion);
         if (that._is_entails_done(subject)) {
             console.log("Already done full entailment for " + subject + "!");
-            async.setImmediate(function(){done_callback(null);});
+            async.setImmediate(function () { done_callback(null); });
             return;
         }
     } else {
@@ -306,7 +385,7 @@ function apply_entailment (store, subject, options, done_callback) {
             "SELECT ?c WHERE { " + subject + " rdf:type rdfs:Class }";
         var sparql2 = pf +
             "SELECT ?c WHERE { " + subject + " rdf:type owl:Class }";
-        async.series([ function(callback2) {
+        async.series([ function (callback2) {
             store.execute(sparql1, function (err, results) {
                 if (!is_null_or_blank(err)) {
                     is_rdfs_class = false;
@@ -332,9 +411,9 @@ function apply_entailment (store, subject, options, done_callback) {
         }],function(err){
             callback(err,[]);
         });
-    },function(results,callback){
+    },function (results,callback){
         if(!is_null_or_blank(subject) && is_owl_class && !that._has_applied_owl_to(subject)) {
-            that._apply_owl_rules(store,subject,function(err){
+            that._apply_owl_rules(store,subject,function (err) {
                 that._applied_owl_to.push(subject);
                 callback(err,[]);
             });
@@ -357,7 +436,7 @@ function apply_entailment (store, subject, options, done_callback) {
                 callback(null,results);
             }
         });
-    },function(results,callback) {
+    },function (results,callback) {
         if (!is_null_or_blank(subject) && is_rdfs_class) {
             var sparql = "" +
                 "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
@@ -386,7 +465,7 @@ function apply_entailment (store, subject, options, done_callback) {
                 return;
             }
             if (!is_null_or_blank(item.s) && !is_null_or_blank(item.s.token) && !is_null_or_blank(item.s.value)){
-                async.setImmediate(function() {
+                async.setImmediate(function () {
                     var s = util.node_to_sparql(item.s);
                     console.log("Applying rules to [s] item "+s+" recursion level "+recursion);
                     apply_rules_to(s, callback2);
@@ -413,7 +492,7 @@ function apply_entailment (store, subject, options, done_callback) {
                     apply_rules_to(s,callback2);
                 }
             });
-        },function(err,results){
+        },function (err,results) {
             if (!is_null_or_blank(err)){
                 callback(err);
             } else {
@@ -423,13 +502,17 @@ function apply_entailment (store, subject, options, done_callback) {
                 callback(null,results);
             }
         });
-    }],function(err,results){
+    }],function (err,results) {
         if (!is_null_or_blank(done_callback)) {
             async.setImmediate(function () { done_callback(err,results); });
         }
     });
-}
+};
 
+/**
+ * require.js module definition.
+ * Creates a loadable require.js module named rdfsrules
+ */
 define(['rdfstore','async','rdfutil'], function (rdfstore,_async,rdfutil) {
     async = _async;
     apply_rdfutil(rdfutil);
@@ -467,7 +550,6 @@ define(['rdfstore','async','rdfutil'], function (rdfstore,_async,rdfutil) {
     };
 
     rdfrules.prototype._load_prereqs = _load_prereqs;
-    rdfrules.prototype._apply_rdf_types = _apply_rdf_types;
     rdfrules.prototype._apply_rdfs_subclassof = _apply_rdfs_subclassof;
     rdfrules.prototype._apply_rdfs_subpropertyof = _apply_rdfs_subpropertyof;
     rdfrules.prototype._apply_rdfs_range = _apply_rdfs_range;

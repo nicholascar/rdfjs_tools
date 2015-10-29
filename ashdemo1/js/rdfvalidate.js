@@ -1,6 +1,27 @@
+/** **********************
+ *  Author: Ashley Sommer
+ *  Griffith ID: (s2172861)
+ *  CSIRO ident: som05d
+ *  This file was created for CSIRO, as part of the Griffith Industry affiliates program.
+ *  August - November 2015.
+ ** **********************/
+
+/** **********************
+ *  rdfvalidate.js
+ *  This file is a module for the rdfjs_tools library.
+ *  This module contains extensions for the jQuery Validate tool.
+ *  This is used when checking if form etries are valid.
+ ** **********************/
+
 /** Assumes that JQuery and JQuery.Validate are both already loaded **/
 var util, async, rdfsrules;
 var is_null_or_blank;
+
+/**
+ * Applies the rdfutil module globally to this file.
+ * For utility purposes, allows util functions to be called directly.
+ * @param rdfutil The rdfutil module, to use to create the globals.
+ */
 var apply_rdfutil = function(rdfutil)
 {
     util = rdfutil;
@@ -535,6 +556,10 @@ var init_custom_functions = function (_store) {
 
 };
 
+/**
+ * require.js module definition.
+ * Creates a loadable require.js module named rdfvalidate
+ */
 define(['rdfstore','rdfsrules','async','rdfutil'], function (rdfstore,_rdfsrules,_async,rdfutil) {
     async = _async;
     rdfsrules = _rdfsrules;

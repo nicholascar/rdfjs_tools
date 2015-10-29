@@ -1,3 +1,17 @@
+/** **********************
+ *  Author: Ashley Sommer
+ *  Griffith ID: (s2172861)
+ *  CSIRO ident: som05d
+ *  This file was created for CSIRO, as part of the Griffith Industry affiliates program.
+ *  August - November 2015.
+ ** **********************/
+
+/** **********************
+ *  rdfutil.js
+ *  This file is a helper module for the rdfjs_tools library.
+ *  Contains utility functions which are shared for use with other modules.
+ ** **********************/
+
 var async = null;
 
 var is_null_or_blank = function (obj)
@@ -211,6 +225,10 @@ var array_of_nodes_contains = function (a, node) {
   return false;
 };
 
+/**
+ * require.js module definition.
+ * Creates a loadable require.js module named rdfutil
+ */
 define(['async'],function (_async) {
     async = _async;
     var rdfutil = function () {

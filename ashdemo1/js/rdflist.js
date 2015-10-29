@@ -1,6 +1,26 @@
+/** **********************
+ *  Author: Ashley Sommer
+ *  Griffith ID: (s2172861)
+ *  CSIRO ident: som05d
+ *  This file was created for CSIRO, as part of the Griffith Industry affiliates program.
+ *  August - November 2015.
+ ** **********************/
+
+/** **********************
+ *  rdflist.js
+ *  This file is a module for the rdfjs_tools library.
+ *  This module is a helper which contains functions relating to RDF lists.
+ *  Functions traverse an RDF List and extract all components into a JS array, or dictionary
+ ** **********************/
+
 var util, async;
 var is_null_or_blank;
 
+/**
+ * Applies the rdfutil module globally to this file.
+ * For utility purposes, allows util functions to be called directly.
+ * @param rdfutil The rdfutil module, to use to create the globals.
+ */
 var apply_rdfutil = function(rdfutil)
 {
     util = rdfutil;
@@ -104,6 +124,10 @@ function extract_subject_as_hashmap (store, subject, callback){
     });
 }
 
+/**
+ * require.js module definition.
+ * Creates a loadable require.js module named rdflist
+ */
 define(['async','rdfutil'], function (_async,rdfutil) {
     async = _async;
     apply_rdfutil(rdfutil);
